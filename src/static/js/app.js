@@ -68,7 +68,8 @@ class App extends React.Component {
           <Question iterateQuestion={this.iterateQuestion}
                     question={this.state.question}
                     questionSet={this.state.questionSet}
-                    iterateScore={this.iterateScore}/>
+                    iterateScore={this.iterateScore}
+                    quizSize={this.state.quizSize}/>
         </div>
       );
     }

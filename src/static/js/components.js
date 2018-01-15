@@ -36,8 +36,12 @@ export class Question extends React.Component {
   };
 
   render(){
+    let progress = (this.props.question + 1) / this.props.quizSize * 100;
+    let next = this.props.question + 1 === this.props.quizSize ? 'See result' : 'Next question';
+
     return (
       <div className="question">
+        <Progress progress={progress}/>
         <p id ="question-text">
           {this.props.questionSet[this.props.question].question}
         </p>
@@ -46,7 +50,8 @@ export class Question extends React.Component {
                iterateQuestion={this.props.iterateQuestion}
                question={this.props.question}
                questionSet={this.props.questionSet}
-               iterateScore={this.props.iterateScore}/>
+               iterateScore={this.props.iterateScore}
+               next={next}/>
       </div>
     )
   }
@@ -104,12 +109,13 @@ class Panel extends React.Component {
         </div>
       )
     }
+    // This could be done succintly using the ternary operator
     else if (this.props.status === 'correct') {
       return (
         <div className="panel" id="correct-panel">
           <p>Correct</p>
           <article className="answer" id="learn">Learn more</article>
-          <article className="answer" id="next" onClick={this.handleNextClick}>Next question</article>
+          <article className="answer" id="next" onClick={this.handleNextClick}>{this.props.next}</article>
         </div>
       )
     }
@@ -118,9 +124,25 @@ class Panel extends React.Component {
         <div className="panel" id="incorrect-panel">
           <p>Wrong Answer!</p>
           <article className="answer" id="learn">See answer</article>
-          <article className="answer" id="next" onClick={this.handleNextClick}>Next question</article>
+          <article className="answer" id="next" onClick={this.handleNextClick}>{this.props.next}</article>
         </div>
       )
     }
+  }
+}
+
+class Progress extends React.Component {
+  render(){
+    console.log('Progress bar coming up');
+    let style = {
+      width: this.props.progress + '%'
+    }
+    console.log('style: ' + style);
+    return (
+      <div id="total-progress">
+        <div id="current-progress" style={style}>
+        </div>
+      </div>
+    )
   }
 }

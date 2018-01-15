@@ -63,3 +63,23 @@ body {
 #correct-panel {
   background-color: #77DD77;
 }
+
+#total-progress #current-progress {
+  min-height: 20px;
+  margin: auto;
+}
+
+#total-progress {
+  min-width: 70%;
+  background-color: #444444;
+  border-radius: 10px;
+  overflow: hidden;
+  text-align: left;
+  border: 3px solid #444444;
+}
+
+#current-progress {
+  background-color: orange;
+  float: left;
+  transition: all 0.8s ease;
+}
