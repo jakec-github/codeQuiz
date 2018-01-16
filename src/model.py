@@ -12,6 +12,8 @@ class Question(Base):
     text = Column(String)
     answer = Column(String)
     explanation = Column(String)
+    correct_replies = Column(Integer)
+    incorrect_replies = Column(Integer)
 
 
 class Dud(Base):
