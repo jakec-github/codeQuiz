@@ -14,7 +14,7 @@ export class Start extends React.Component {
     return (
       <div className="start">
         <p>This is the start menu</p>
-        <div id="start-button" onClick={this.handleStartClick}>Start</div>
+        <div id="start-button" className="nav btn" onClick={this.handleStartClick}>Start</div>
       </div>
     )
   }
@@ -43,7 +43,7 @@ export class Question extends React.Component {
       <div className="question">
         <Progress progress={progress}/>
         <p id ="question-text">
-          {this.props.questionSet[this.props.question].question}
+          {this.props.questionSet[this.props.question].text}
         </p>
         <Panel status={this.state.status}
                changeStatus={this.changeStatus}
@@ -59,12 +59,18 @@ export class Question extends React.Component {
 
 
 export class Result extends React.Component {
+
+  handleMenuClick = () => {
+    this.props.changeLocation('start');
+  }
+
   render(){
     console.log('Loading results');
     return (
       <div>
         <p>You got...</p>
         <p>{this.props.score} out of {this.props.quizSize}</p>
+        <div id="menu" className="nav btn" onClick={this.handleMenuClick}>Menu</div>
       </div>
     )
   }
@@ -87,15 +93,20 @@ class Panel extends React.Component {
     }
   }
 
+  handleLearnClick = () => {
+    this.props.changeStatus('explanation');
+  }
+
   render(){
     // Consider nesting if statement in return statement
+    let thisQuestion = this.props.questionSet[this.props.question];
     if (this.props.status === 'answers') {
       let answers = [];
-      let thisQuestion = this.props.questionSet[this.props.question];
-      for (let i = 0; i < thisQuestion.incorrect.length; i++){
-        answers.push(<article className="answer" data-correct="incorrect" onClick={this.handleAnswerClick}>{thisQuestion.incorrect[i]}</article>)
+
+      for (let i = 0; i < thisQuestion.duds.length; i++){
+        answers.push(<article className="answer btn" data-correct="incorrect" onClick={this.handleAnswerClick}>{thisQuestion.duds[i]}</article>)
       }
-      answers.push(<article className="answer" data-correct="correct" onClick={this.handleAnswerClick}>{thisQuestion.correct}</article>)
+      answers.push(<article className="answer btn" data-correct="correct" onClick={this.handleAnswerClick}>{thisQuestion.answer}</article>)
       for (let i = answers.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (answers.length));
         let temp = answers[i];
@@ -114,17 +125,26 @@ class Panel extends React.Component {
       return (
         <div className="panel" id="correct-panel">
           <p>Correct</p>
-          <article className="answer" id="learn">Learn more</article>
-          <article className="answer" id="next" onClick={this.handleNextClick}>{this.props.next}</article>
+          <article className="answer btn" id="learn" onClick={this.handleLearnClick}>Learn more</article>
+          <article className="answer btn" id="next" onClick={this.handleNextClick}>{this.props.next}</article>
+        </div>
+      )
+    }
+    else if (this.props.status === 'incorrect') {
+      return (
+        <div className="panel" id="incorrect-panel">
+          <p>Wrong Answer!</p>
+          <article className="answer btn" id="learn" onClick={this.handleLearnClick}>See answer</article>
+          <article className="answer btn" id="next" onClick={this.handleNextClick}>{this.props.next}</article>
         </div>
       )
     }
     else {
       return (
-        <div className="panel" id="incorrect-panel">
-          <p>Wrong Answer!</p>
-          <article className="answer" id="learn">See answer</article>
-          <article className="answer" id="next" onClick={this.handleNextClick}>{this.props.next}</article>
+        <div className="panel" id="explanation-panel">
+          <p>{thisQuestion.answer}</p>
+          <p>{thisQuestion.explanation}</p>
+          <article className="answer btn" id="next" onClick={this.handleNextClick}>{this.props.next}</article>
         </div>
       )
     }

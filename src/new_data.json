@@ -1,0 +1,32 @@
+[
+  {
+    "text": "Question 2",
+    "answer": "correct answer 2",
+    "duds": [
+      "2 incorrect answer 1",
+      "incorrect answer 2",
+      "incorrect answer 3"
+    ],
+    "explanation": "Some explanation text 2"
+  },
+  {
+    "text": "Question 3",
+    "answer": "correct answer 3",
+    "duds": [
+      "3 incorrect answer 1",
+      "incorrect answer 2",
+      "incorrect answer 3"
+    ],
+    "explanation": "Some explanation text 3"
+  },
+  {
+    "text": "Question 4",
+    "answer": "correct answer 4",
+    "duds": [
+      "4 incorrect answer 1",
+      "incorrect answer 2",
+      "incorrect answer 3"
+    ],
+    "explanation": "Some explanation text 4"
+  }
+]

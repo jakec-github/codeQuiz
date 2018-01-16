@@ -29,7 +29,16 @@ class App extends React.Component {
   }
 
   changeLocation = (newLocation) => {
-    this.setState({location: newLocation});
+
+    if (newLocation === 'start') {
+      this.setState({location: newLocation,
+                     question: 0,
+                     score: 0
+      });
+    }
+    else {
+      this.setState({location: newLocation});
+    }
   };
 
   iterateQuestion = () => {
@@ -77,7 +86,8 @@ class App extends React.Component {
       return (
         <div className="App">
           <Result score={this.state.score}
-                  quizSize={this.state.quizSize}/>
+                  quizSize={this.state.quizSize}
+                  changeLocation={this.changeLocation}/>
         </div>
       );
     }
