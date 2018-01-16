@@ -10,7 +10,6 @@ export class Start extends React.Component {
   }
 
   render(){
-    console.log('Start loading');
     return (
       <div className="start">
         <p>This is the start menu</p>
@@ -65,7 +64,6 @@ export class Result extends React.Component {
   }
 
   render(){
-    console.log('Loading results');
     return (
       <div>
         <p>You got...</p>
@@ -84,13 +82,28 @@ class Panel extends React.Component {
   }
 
   handleAnswerClick = (event) => {
-    if (event.target.dataset.correct === 'correct'){
+    let correct = event.target.dataset.correct;
+    let data = {
+      id: this.props.questionSet[this.props.question].id,
+      correct: correct
+    }
+    if (correct === 'correct'){
       this.props.changeStatus('correct');
       this.props.iterateScore();
     }
     else {
       this.props.changeStatus('incorrect');
     }
+    console.log("updated");
+    fetch('/difficulty', {
+      method: 'POST',
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      }),
+      body: JSON.stringify(data)
+    })
+    .then(() => console.log('Worked'))
+    .catch((err) => console.log(err))
   }
 
   handleLearnClick = () => {
@@ -153,11 +166,9 @@ class Panel extends React.Component {
 
 class Progress extends React.Component {
   render(){
-    console.log('Progress bar coming up');
     let style = {
       width: this.props.progress + '%'
     }
-    console.log('style: ' + style);
     return (
       <div id="total-progress">
         <div id="current-progress" style={style}>

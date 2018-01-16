@@ -43,7 +43,6 @@ class App extends React.Component {
 
   iterateQuestion = () => {
     if (this.state.question + 1 >= this.state.quizSize ){
-      console.log('Changing location from ' + this.state.location + ' to result');
       // Consider resetting question
       this.setState({location: 'result'});
     }
@@ -53,17 +52,14 @@ class App extends React.Component {
   }
 
   iterateScore = () => {
-    console.log('score iterating');
     this.setState({score: this.state.score + 1});
   }
 
   render() {
-    console.log('App rendering');
     console.log('score: ' + this.state.score);
     // Consider case statement
     // Also consider nesting code with jsx for a cleaner result
     if (this.state.location === 'start'){
-      console.log('Start should render');
       return (
         <div className="App">
           <Start changeLocation={this.changeLocation} />
