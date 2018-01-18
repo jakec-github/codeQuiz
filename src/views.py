@@ -42,6 +42,14 @@ def quiz():
         for dud in duds:
             all_duds.append(dud.text)
 
+        codes = db_session.query(Code).filter_by(question_id=question.id).all()
+        all_codes = []
+        for code in codes:
+            all_codes.append({
+                "type": code.type,
+                "sample": code.sample
+            })
+
         # TODO if statement needs testing
         if question.correct_replies == 0:
             if question.incorrect_replies == 0:
@@ -57,14 +65,13 @@ def quiz():
             "answer": question.answer,
             "explanation": question.explanation,
             "duds": all_duds,
+            "codes": all_codes,
             "difficulty": difficulty
         }
         all_questions.append(question_dict)
         print("--------------")
         print("Question", question_dict["difficulty"])
 
-    # with open(app.static_folder + "/questions.json", "r") as f:
-    #     questions = loads(f.read())
     print("---------")
     all_questions = sorted(all_questions, key=lambda k: k["difficulty"])
     print(all_questions)

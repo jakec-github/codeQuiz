@@ -37,6 +37,8 @@ export class Question extends React.Component {
   render(){
     let progress = (this.props.question + 1) / this.props.quizSize * 100;
     let next = this.props.question + 1 === this.props.quizSize ? 'See result' : 'Next question';
+    // Currently this is defined in three separate places
+    let thisQuestion = this.props.questionSet[this.props.question];
 
     return (
       <div className="question">
@@ -44,6 +46,10 @@ export class Question extends React.Component {
         <p id ="question-text">
           {this.props.questionSet[this.props.question].text}
         </p>
+        {thisQuestion.codes.length === 0 ? (undefined):(
+          <Code question={this.props.question}
+                questionSet={this.props.questionSet}/>
+        )}
         <Panel status={this.state.status}
                changeStatus={this.changeStatus}
                iterateQuestion={this.props.iterateQuestion}
@@ -117,7 +123,7 @@ class Panel extends React.Component {
       let answers = [];
 
       for (let i = 0; i < thisQuestion.duds.length; i++){
-        answers.push(<article className="answer btn" data-correct="incorrect" onClick={this.handleAnswerClick}>{thisQuestion.duds[i]}</article>)
+        answers.push(<article className="answer btn" data-correct="incorrect" onClick={this.handleAnswerClick} key={i.toString()}>{thisQuestion.duds[i]}</article>)
       }
       answers.push(<article className="answer btn" data-correct="correct" onClick={this.handleAnswerClick}>{thisQuestion.answer}</article>)
       for (let i = answers.length - 1; i > 0; i--) {
@@ -174,6 +180,34 @@ class Progress extends React.Component {
         <div id="current-progress" style={style}>
         </div>
       </div>
+    )
+  }
+}
+
+class Code extends React.Component {
+  render() {
+    let thisQuestion = this.props.questionSet[this.props.question];
+    let codes = [];
+    let tabs = [];
+    for (let i = 0; i < thisQuestion.codes.length; i++) {
+      console.log(thisQuestion.codes[i].type);
+      tabs.push(<article id={'tab-' + i.toString()} className="tab" key={i.toString()}>{thisQuestion.codes[i].type}</article>)
+      codes.push(<article id={'code-' + i.toString()} className="code-block" key={i.toString()}>{thisQuestion.codes[i].sample}</article> )
+    }
+    let tabs_style= {
+      gridTemplateColumns: 'repeat(' + tabs.length + ', 1fr)'
+    };
+    return (
+      <article id="code">
+        <div id="code-tabs" style={tabs_style}>
+          {tabs}
+        </div>
+        <pre id="monospace">
+          <code>
+            {codes}
+          </code>
+        </pre>
+      </article>
     )
   }
 }
