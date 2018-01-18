@@ -26,6 +26,17 @@ class Dud(Base):
     question = relationship(Question)
 
 
+class Code(Base):
+    __tablename__ = "code"
+
+    id = Column(Integer, primary_key=True)
+    type = Column(String)
+    sample = Column(String)
+    question_id = Column(Integer, ForeignKey('question.id'))
+
+    question = relationship(Question)
+
+
 engine = create_engine("postgresql+psycopg2://jakechorley@/js_quiz")
 
 Base.metadata.create_all(engine)

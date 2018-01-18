@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JS Quiz</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link id="css" rel="stylesheet" href="static/css/main.css" />
+    <script
+    src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <main>
+      <div id="quiz">
+        <form method="post">
+          <label id="text-label">Question</label>
+          <textarea id="text-input" name="text" required></textarea>
+          <label id="answer-label">Answer</label>
+          <input id="answer-input" name="answer" required/>
+          <label id="dud-label">Incorrect Answer</label>
+          <input class="dud-input" id="dud-input" name="incorrect" required/>
+          <input class="dud-input" id="dud-input-2" name="incorrect" style="display:none;"/>
+          <input class="dud-input" id="dud-input-3" name="incorrect" style="display:none;"/>
+          <input class="dud-input" id="dud-input-4" name="incorrect" style="display:none;"/>
+          <input class="dud-input" id="dud-input-5" name="incorrect" style="display:none;"/>
+          <input class="dud-input" id="dud-input-6" name="incorrect" style="display:none;"/>
+          <button id="add-dud">Add Incorrect Answer</button>
+          <label id="explanation-label">Explanation Of Correct Answer</label>
+          <textarea id="explanation-input" name="explanation" required></textarea>
+          <button id="submit" type="submit">Submit question</button>
+        </form>
+
+      </div>
+    </main>
+    <script src="static/js/bundle2.min.js"></script>
+  </body>
+</html>

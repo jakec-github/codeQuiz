@@ -42,6 +42,23 @@ gulp.task('scripts', function(){
     }))
     .pipe(uglify())
     .pipe(gulp.dest('./src/static/js'));
+    
+    // Sticking these together is inefficient
+    gulp.src('./src/static/js/add.js')
+    .pipe(plumber())
+    .pipe(bro({
+      transform: [
+        babel.configure({
+          presets: ['env']
+        })
+      ]
+    }))
+    .pipe(rename({
+      basename: 'bundle2',
+      suffix: '.min'
+    }))
+    .pipe(uglify())
+    .pipe(gulp.dest('./src/static/js'));
 });
 
 // Style

@@ -12,9 +12,11 @@ from sqlalchemy import (create_engine,
 from sqlalchemy.orm import sessionmaker
 from model import (Base,
                    Question,
-                   Dud)
+                   Dud,
+                   Code)
 
 from json import loads
+import bleach
 
 app = Flask(__name__)
 
@@ -83,6 +85,44 @@ def difficulty():
         question.incorrect_replies += 1
     db_session.commit()
     return "OK", 200
+
+
+# Admin routes
+
+
+@app.route("/add", methods=["GET", "POST"])
+def add():
+    if request.method == "GET":
+
+        return render_template("add.html")
+
+    if request.method == "POST":
+
+        question = {
+            "text": request.form["text"],
+            "answer": request.form["answer"],
+            "duds": [x for x in request.form.getlist("incorrect") if x != ""],
+            "explanation": request.form["explanation"]
+        }
+
+        new_question = Question(text=question["text"],
+                                answer=question["answer"],
+                                explanation=question["explanation"],
+                                correct_replies=0,
+                                incorrect_replies=0)
+        db_session.add(new_question)
+        db_session.commit()
+        print("Added question", question["text"])
+        for dud in question["duds"]:
+            new_dud = Dud(question_id=new_question.id,
+                          text=dud)
+            db_session.add(new_dud)
+
+            print("Added dud", dud)
+
+        db_session.commit()
+
+        return render_template("add.html"), 200
 
 
 if __name__ == "__main__":
