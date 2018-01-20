@@ -17,6 +17,7 @@ from model import (Base,
 
 from json import loads
 import bleach
+import html
 
 app = Flask(__name__)
 
@@ -40,14 +41,14 @@ def quiz():
         duds = db_session.query(Dud).filter_by(question_id=question.id).all()
         all_duds = []
         for dud in duds:
-            all_duds.append(dud.text)
+            all_duds.append(html.unescape(dud.text))
 
         codes = db_session.query(Code).filter_by(question_id=question.id).all()
         all_codes = []
         for code in codes:
             all_codes.append({
-                "type": code.type,
-                "sample": code.sample
+                "type": html.unescape(code.type),
+                "sample": html.unescape(code.sample)
             })
 
         # TODO if statement needs testing
@@ -61,9 +62,9 @@ def quiz():
 
         question_dict = {
             "id": question.id,
-            "text": question.text,
-            "answer": question.answer,
-            "explanation": question.explanation,
+            "text": html.unescape(question.text),
+            "answer": html.unescape(question.answer),
+            "explanation": html.unescape(question.explanation),
             "duds": all_duds,
             "codes": all_codes,
             "difficulty": difficulty
@@ -105,12 +106,30 @@ def add():
 
     if request.method == "POST":
 
+        # Loop could be stopped when it reaches an empty string instead
+        types = [x for x in request.form.getlist("code-type") if x != ""]
+        samples = [x for x in request.form.getlist("code-sample") if x != ""]
+        codes = []
+        for i, t in enumerate(types):
+            next_code = {
+                "type": bleach.clean(t),
+                "sample": bleach.clean(samples[i])
+            }
+            codes.append(next_code)
+
         question = {
-            "text": request.form["text"],
-            "answer": request.form["answer"],
-            "duds": [x for x in request.form.getlist("incorrect") if x != ""],
-            "explanation": request.form["explanation"]
+            "text": bleach.clean(request.form["text"]),
+            "answer": bleach.clean(request.form["answer"]),
+            "duds": [bleach.clean(x)
+                     for x
+                     in request.form.getlist("incorrect")
+                     if x != ""],
+            "explanation": bleach.clean(request.form["explanation"]),
+            "codes": codes
         }
+
+        with open("log.txt", "a") as f:
+            f.write(str(question["duds"]) + "\n\n")
 
         new_question = Question(text=question["text"],
                                 answer=question["answer"],
@@ -124,10 +143,17 @@ def add():
             new_dud = Dud(question_id=new_question.id,
                           text=dud)
             db_session.add(new_dud)
-
+            db_session.commit()
             print("Added dud", dud)
 
-        db_session.commit()
+        for code in question["codes"]:
+            with open("log.txt", "a") as f:
+                f.write("Loading code" + str(code) + "\n")
+            new_code = Code(question_id=new_question.id,
+                            type=code["type"],
+                            sample=code["sample"])
+            db_session.add(new_code)
+            db_session.commit()
 
         return render_template("add.html"), 200
 

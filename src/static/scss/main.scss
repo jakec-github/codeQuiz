@@ -105,6 +105,8 @@ form {
   textarea {
     min-width: 280px;
     border-radius: 5px;
+    margin: auto;
+    margin-bottom: 15px;
   }
   input {
     display: block;
@@ -138,13 +140,13 @@ form {
   border-radius: 5px;
   margin: auto;
   margin-bottom: 25px;
-  min-width: 30%;
+  min-width: 97%;
+  display: inline-block;
   text-align: left;
   color: white;
   overflow-x: hidden;
-  max-width: 97%;
+  // max-width: 97%;
   #code-tabs {
-    background-color: #222222;
     text-align: right;
     font-size: 20px;
     display: grid;
@@ -156,11 +158,16 @@ form {
       padding: 3px 10px;
       border-top: none;
       border-left: none;
+      cursor: pointer;
+    }
+    #selected {
+      background-color: #222222;
     }
   }
-  #monospace {
+  #monospace article {
     padding: 7px 10px;
     font-family: monospace;
+    font-size: 16px;
   }
 }
 
@@ -184,11 +191,15 @@ form {
     grid-column-gap: 5px;
   }
 
+  #explanation-panel {
+    grid-template-columns: 1fr; 
+  }
+
   #learn {
     grid-column: 1/2;
   }
 
   #code {
-    max-width: 50%;
+    min-width: 50%;
   }
 }

@@ -31,3 +31,20 @@ $('#add-dud').on('click', function(e){
     $('#add-dud').css('display', 'none');
   }
 });
+
+let codes = 1;
+
+$('#add-code').on('click', function(e){
+  e.preventDefault();
+  console.log('Hello there');
+  if (codes < 4) {
+    console.log('codes ' + codes);
+    console.log($('#add-code'));
+    $('#type-input-' + codes).css('display', 'block');
+    $('#code-input-' + codes).css('display', 'block');
+  }
+  if (codes === 3) {
+    $('#add-code').css('display', 'none');
+  }
+  codes++;
+});

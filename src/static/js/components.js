@@ -185,13 +185,35 @@ class Progress extends React.Component {
 }
 
 class Code extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      code: 0
+    };
+  }
+
+  handleTabClick = (event) => {
+    console.log(event.target.dataset.value);
+    let newCode = event.target.dataset.value;
+    if (newCode !== this.state.code) {
+
+      this.setState({
+        code: newCode
+      })
+    }
+  }
+
   render() {
     let thisQuestion = this.props.questionSet[this.props.question];
     let codes = [];
     let tabs = [];
     for (let i = 0; i < thisQuestion.codes.length; i++) {
       console.log(thisQuestion.codes[i].type);
-      tabs.push(<article id={'tab-' + i.toString()} className="tab" key={i.toString()}>{thisQuestion.codes[i].type}</article>)
+      console.log('i now = ' + i);
+      console.log('this.state.code = ' + this.state.code);
+      tabs.push(<article onClick={this.handleTabClick} id={i == this.state.code ? 'selected' : 'unselected'} className="tab" data-value={i.toString()} key={i.toString()}>{thisQuestion.codes[i].type}</article>)
       codes.push(<article id={'code-' + i.toString()} className="code-block" key={i.toString()}>{thisQuestion.codes[i].sample}</article> )
     }
     let tabs_style= {
@@ -204,7 +226,7 @@ class Code extends React.Component {
         </div>
         <pre id="monospace">
           <code>
-            {codes}
+            {codes[this.state.code]}
           </code>
         </pre>
       </article>
