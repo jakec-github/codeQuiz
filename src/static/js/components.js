@@ -35,14 +35,13 @@ export class Question extends React.Component {
   };
 
   render(){
-    let progress = (this.props.question + 1) / this.props.quizSize * 100;
     let next = this.props.question + 1 === this.props.quizSize ? 'See result' : 'Next question';
     // Currently this is defined in three separate places
     let thisQuestion = this.props.questionSet[this.props.question];
 
     return (
       <div className="question">
-        <Progress progress={progress}/>
+        <Progress question={this.props.question} quizSize={this.props.quizSize}/>
         <p id ="question-text">
           {this.props.questionSet[this.props.question].text}
         </p>
@@ -172,11 +171,17 @@ class Panel extends React.Component {
 
 class Progress extends React.Component {
   render(){
+    let progress = (this.props.question + 1) / this.props.quizSize * 100;
     let style = {
-      width: this.props.progress + '%'
+      width: progress + '%'
     }
     return (
       <div id="total-progress">
+        <div id="progress-fraction">
+          <p>
+            {this.props.question + 1}/{this.props.quizSize}
+          </p>
+        </div>
         <div id="current-progress" style={style}>
         </div>
       </div>
