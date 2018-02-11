@@ -13,7 +13,9 @@ from sqlalchemy.orm import sessionmaker
 from model import (Base,
                    Question,
                    Dud,
-                   Code)
+                   Code,
+                   Quiz,
+                   QuizJoin)
 
 from json import loads
 import bleach
@@ -21,7 +23,7 @@ import html
 
 app = Flask(__name__)
 
-engine = create_engine('postgresql+psycopg2://jakechorley@/js_quiz')
+engine = create_engine("postgresql+psycopg2://jakechorley@/js_quiz")
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 db_session = DBSession()
@@ -30,6 +32,82 @@ db_session = DBSession()
 @app.route("/")
 def home():
     return render_template("home.html")
+
+
+@app.route("/allquizzes")
+def get_all_quizzes():
+    quizzes = db_session.query(Quiz).all()
+    all_quizzes = []
+    for quiz in quizzes:
+        quiz_dict = {
+            "id": quiz.id,
+            "name": quiz.name,
+            "description": quiz.description
+        }
+        all_quizzes.append(quiz_dict)
+    return jsonify(all_quizzes), 200
+
+
+@app.route("/choosequiz/<int:quiz_id>")
+def choose_quiz(quiz_id):
+    quiz = db_session.query(Quiz).filter_by(id=quiz_id).first()
+
+    quiz = {
+        "id": quiz.id,
+        "name": quiz.name,
+        "description": quiz.description,
+        "timeLimit": quiz.time_limit
+    }
+
+    question_ids = db_session.query(QuizJoin).filter_by(quiz_id=quiz["id"]).all()
+    question_ids = [x.question_id for x in question_ids]
+    questions = db_session.query(Question).filter(Question.id.in_(question_ids)).all()
+    all_questions = []
+    for question in questions:
+        duds = db_session.query(Dud).filter_by(question_id=question.id).all()
+        all_duds = []
+        for dud in duds:
+            all_duds.append(html.unescape(dud.text))
+
+        codes = db_session.query(Code).filter_by(question_id=question.id).all()
+        all_codes = []
+        for code in codes:
+            all_codes.append({
+                "type": html.unescape(code.type),
+                "sample": html.unescape(code.sample)
+            })
+
+        if question.correct_replies == 0:
+            if question.incorrect_replies == 0:
+                difficulty = 1
+            else:
+                difficulty = 0
+        else:
+            difficulty = question.incorrect_replies / question.correct_replies
+
+        question_dict = {
+            "id": question.id,
+            "text": html.unescape(question.text),
+            "answer": html.unescape(question.answer),
+            "explanation": html.unescape(question.explanation),
+            "duds": all_duds,
+            "codes": all_codes,
+            "difficulty": difficulty
+        }
+        all_questions.append(question_dict)
+        print("--------------")
+        print("Question", question_dict["difficulty"])
+
+    print("---------")
+    all_questions = sorted(all_questions, key=lambda k: k["difficulty"])
+    print(all_questions)
+
+    data = {
+        "quiz": quiz,
+        "questionSet": all_questions
+    }
+
+    return jsonify(data), 200
 
 
 @app.route("/quiz")
@@ -137,6 +215,7 @@ def add():
                                 correct_replies=0,
                                 incorrect_replies=0)
         db_session.add(new_question)
+        # I am sure it is possible to condense this to one db commit!!!
         db_session.commit()
         print("Added question", question["text"])
         for dud in question["duds"]:

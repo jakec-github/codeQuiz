@@ -1,7 +1,7 @@
 /*jshint esversion: 6 */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Start, Question, Result} from './components.js';
+import {Start, Question, Result, Home} from './components.js';
 
 class App extends React.Component {
 
@@ -9,28 +9,29 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      location: 'start',
+      location: 'home',
       question: 0,
+      quiz: 0,
       questionSet: [],
       quizSize: 0,
       score: 0
     };
   }
 
-  componentDidMount() {
-    fetch('/quiz')
-    .then(data => data.json())
-    .then(data => {
-      console.log(data);
-      this.setState({questionSet: data,
-                     quizSize: data.length
-                   });
-    });
-  }
-
+  // componentDidMount() {
+    // fetch('/quiz')
+    // .then(data => data.json())
+    // .then(data => {
+    //   console.log(data);
+    //   this.setState({questionSet: data,
+    //                  quizSize: data.length
+    //                });
+    // });
+  // }
+  // This may need adapting now there is a homepage
   changeLocation = (newLocation) => {
 
-    if (newLocation === 'start') {
+    if (newLocation === 'start' || newLocation === 'home') {
       this.setState({location: newLocation,
                      question: 0,
                      score: 0
@@ -40,6 +41,15 @@ class App extends React.Component {
       this.setState({location: newLocation});
     }
   };
+
+  setQuestions = (questionSet) => {
+    console.log('Setting question')
+    this.setState({
+      questionSet: questionSet,
+      quizSize: questionSet.length
+    });
+    console.log(this.state.questionSet);
+  }
 
   iterateQuestion = () => {
     if (this.state.question + 1 >= this.state.quizSize ){
@@ -55,14 +65,28 @@ class App extends React.Component {
     this.setState({score: this.state.score + 1});
   }
 
+  selectQuiz = (quiz) => {
+    this.setState({quiz: quiz});
+  }
+
   render() {
     console.log('score: ' + this.state.score);
     // Consider case statement
     // Also consider nesting code with jsx for a cleaner result
-    if (this.state.location === 'start'){
+    if (this.state.location === 'home'){
       return (
         <div className="App">
-          <Start changeLocation={this.changeLocation} />
+          <Home changeLocation={this.changeLocation}
+                selectQuiz={this.selectQuiz} />
+        </div>
+      )
+    }
+    else if (this.state.location === 'start'){
+      return (
+        <div className="App">
+          <Start changeLocation={this.changeLocation}
+                 quiz={this.state.quiz}
+                 setQuestions={this.setQuestions} />
         </div>
       );
     }

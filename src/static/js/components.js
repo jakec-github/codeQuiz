@@ -3,7 +3,66 @@ import React from 'react';
 
 // Consider better organisation of components
 
+export class Home extends React.Component {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      allQuizzes: []
+    }
+  }
+
+  componentDidMount = () => {
+    fetch('/allquizzes')
+    .then(data => data.json())
+    .then(data => {
+      console.log(data);
+      this.setState({allQuizzes: data})
+    });
+  }
+
+  handleQuizClick = (event) => {
+    let quizId = event.target.dataset.id;
+    this.props.selectQuiz(quizId);
+    this.props.changeLocation('start');
+  }
+
+  render() {
+    let quizzes = []
+    this.state.allQuizzes.map((quiz, i) => {
+      console.log('Looping through');
+      quizzes.push(<article className="quiz-option btn" data-id={quiz.id} onClick={this.handleQuizClick} key={i.toString()}>{quiz.name}</article>)
+    })
+
+    return (
+      <div className="home">
+        <p>Pick a quiz</p>
+        {quizzes}
+      </div>
+    )
+  }
+}
+
 export class Start extends React.Component {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      quiz: {}
+    }
+  }
+
+  // This request needs to include a quiz id from this.props.quiz
+  componentDidMount = () => {
+    fetch(`/choosequiz/${this.props.quiz}`)
+    .then(data => data.json())
+    .then(data => {
+      this.props.setQuestions(data.questionSet)
+      this.setState({quiz:data.quiz})
+    })
+  }
 
   handleStartClick = (event) => {
     this.props.changeLocation('quiz');
@@ -12,7 +71,9 @@ export class Start extends React.Component {
   render(){
     return (
       <div className="start">
-        <p>This is the start menu</p>
+        <h1>{this.state.quiz.name}</h1>
+        <p>{this.state.quiz.description}</p>
+        <p>You have {this.state.quiz.timeLimit / 60} minutes</p>
         <div id="start-button" className="nav btn" onClick={this.handleStartClick}>Start</div>
       </div>
     )
@@ -65,7 +126,7 @@ export class Question extends React.Component {
 export class Result extends React.Component {
 
   handleMenuClick = () => {
-    this.props.changeLocation('start');
+    this.props.changeLocation('home');
   }
 
   render(){
