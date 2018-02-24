@@ -8,6 +8,14 @@ from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
+class User(Base):
+    __tablename__ = "user"
+
+    id = Column(Integer, primary_key=True)
+    username = Column(String)
+    password_hash = Column(String, nullable=False)
+    salt = Column(String, nullable=False)
+
 
 class Question(Base):
     __tablename__ = "question"
@@ -49,6 +57,9 @@ class Quiz(Base):
     description = Column(String)
     time_limit = Column(Integer)
     visible = Column(Boolean)
+    creator = Column(Integer, ForeignKey('user.id'))
+
+    user = relationship(User)
 
 
 class QuizJoin(Base):
@@ -59,6 +70,17 @@ class QuizJoin(Base):
     quiz_id = Column(Integer, ForeignKey('quiz.id'))
 
     question = relationship(Question)
+    quiz = relationship(Quiz)
+
+class Score(Base):
+    __tablename__ = "score"
+
+    id = Column(Integer, primary_key=True)
+    score = Column(Integer)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    quiz_id = Column(Integer, ForeignKey('quiz.id'))
+
+    user = relationship(User)
     quiz = relationship(Quiz)
 
 
