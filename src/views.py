@@ -5,23 +5,28 @@ from flask import (Flask,
                    request,
                    url_for,
                    make_response,
-                   jsonify)
+                   jsonify,
+                   abort,
+                   session as login_session)
 
 from sqlalchemy import (create_engine,
                         desc)
 from sqlalchemy.orm import sessionmaker
 from model import (Base,
+                   User,
                    Question,
                    Dud,
                    Code,
                    Quiz,
-                   QuizJoin)
+                   QuizJoin,
+                   Score)
 
 from json import loads
 import bleach
 import html
 
 app = Flask(__name__)
+app.secret_key = "super secret key"
 
 engine = create_engine("postgresql+psycopg2://jakechorley@/js_quiz")
 Base.metadata.bind = engine
@@ -172,7 +177,64 @@ def difficulty():
     db_session.commit()
     return "OK", 200
 
+# Authentication
 
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    # TODO: Make sure to bleach this stuff
+    if request.method == "POST":
+        # if using json request.json.get('username')
+        data = request.get_json()
+        username = data["username"]
+        password = data["password"]
+        if username is None or password is None:
+            print("Username or password missing")
+            abort(400)
+        if db_session.query(User).filter_by(username=username).first() is not None:
+            print("Username already taken")
+            # This needs to inform the user
+            abort(400)
+        print("Creating user")
+        user = User(username = username)
+        user.generate_salt()
+        user.hash_password(password)
+        db_session.add(user)
+        db_session.commit()
+        login_session["user"] = user.username
+        return jsonify({"username": user.username}), 201
+
+@app.route("/login", methods=["GET","POST"])
+def login():
+    if request.method == "POST":
+        data = request.get_json()
+        username = data["username"]
+        password = data["password"]
+        if username is None or password is None:
+            print("Username or password missing")
+            abort(400)
+        user = db_session.query(User).filter_by(username=username).first()
+        if not user:
+            print("User not found")
+            # This needs to inform the user
+            abort(400)
+        if not user.verify_password(password):
+            print("Incorrect password")
+            abort(400)
+            # This needs to inform the user
+        login_session["user"] = user.username
+        return jsonify({"username": user.username}), 201
+
+
+@app.route("/logout", methods=["POST"])
+def log_out():
+    print("Log Out being attempted")
+    if not login_session["user"]:
+        print("Not logged in")
+        abort(400)
+    print("Destroying user session")
+    del login_session["user"]
+
+    return "Logged out", 200
 # Admin routes
 
 

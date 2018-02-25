@@ -5,6 +5,10 @@ from sqlalchemy import (create_engine,
                         Boolean)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+from passlib.apps import custom_app_context as pwd_context
+
+import random
+import string
 
 Base = declarative_base()
 
@@ -15,6 +19,21 @@ class User(Base):
     username = Column(String)
     password_hash = Column(String, nullable=False)
     salt = Column(String, nullable=False)
+
+    def generate_salt(self):
+        self.salt = "".join(random.choice(string.ascii_letters + string.digits) for i in range(16))
+
+    def hash_password(self, password):
+        # Check that this is the correct way to salt password
+        salted_password = password + self.salt
+        print(salted_password)
+        self.password_hash = pwd_context.encrypt(salted_password)
+        print('----')
+        print(self.password_hash)
+
+    def verify_password(self, password):
+        salted_password = password + self.salt
+        return pwd_context.verify(salted_password, self.password_hash)
 
 
 class Question(Base):
