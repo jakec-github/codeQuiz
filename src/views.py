@@ -177,6 +177,37 @@ def difficulty():
     db_session.commit()
     return "OK", 200
 
+@app.route("/score", methods=["POST"])
+def score():
+    data = request.data.decode("utf-8")
+    print("----")
+    print(data)
+
+    data = loads(data)
+
+    current_score = db_session.query(Score) \
+                    .filter_by(user_id=data["user_id"]) \
+                    .filter_by(quiz_id=data["quiz_id"]) \
+                    .first()
+
+    print(current_score)
+    if current_score == None:
+        print('Creating new score')
+        new_score = Score(score=data["score"],
+                          user_id=data["user_id"],
+                          quiz_id=data["quiz_id"])
+
+        db_session.add(new_score)
+
+    else:
+        print('Found current score')
+        current_score.score = max(current_score.score, data["score"])
+
+    db_session.commit()
+
+
+    return "OK", 200
+
 # Authentication
 
 @app.route("/register", methods=["GET", "POST"])
@@ -201,7 +232,8 @@ def register():
         db_session.add(user)
         db_session.commit()
         login_session["user"] = user.username
-        return jsonify({"username": user.username}), 201
+        login_session["user_id"] = user.id
+        return jsonify({"username": user.username, "user_id": user.id}), 201
 
 @app.route("/login", methods=["GET","POST"])
 def login():
@@ -222,7 +254,8 @@ def login():
             abort(400)
             # This needs to inform the user
         login_session["user"] = user.username
-        return jsonify({"username": user.username}), 201
+        login_session["user_id"] = user.id
+        return jsonify({"username": user.username, "user_id": user.id}), 201
 
 
 @app.route("/logout", methods=["POST"])

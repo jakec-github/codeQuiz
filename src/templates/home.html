@@ -10,7 +10,7 @@
     <header>
       <h2>&lt;code-quiz&gt;</h2>
       {% if "user" in session.keys() %}
-      <div data-user="true" data-username="{{session["user"]}}" id="user-icon-wrapper">
+      <div data-user="true" data-username="{{session["user"]}}" data-id="{{session["user_id"]}}" id="user-icon-wrapper">
       </div>
       {% else %}
       <div data-user="false" id="user-icon-wrapper">

@@ -107,7 +107,8 @@ class App extends React.Component {
         <div className="App">
           <Result score={this.state.score}
                   quizSize={this.state.quizSize}
-                  changeLocation={this.changeLocation}/>
+                  changeLocation={this.changeLocation}
+                  quiz={this.state.quiz}/>
         </div>
       );
     }
@@ -124,6 +125,7 @@ class User extends React.Component {
       open: false,
       type: 'sign up',
       username: '',
+      userId: '',
       password: '',
       loggedIn: false
     };
@@ -136,7 +138,8 @@ class User extends React.Component {
     if (document.getElementById('user-icon-wrapper').dataset.user === "true") {
       this.setState({
         loggedIn: true,
-        username: document.getElementById('user-icon-wrapper').dataset.username
+        username: document.getElementById('user-icon-wrapper').dataset.username,
+        userId: document.getElementById('user-icon-wrapper').dataset.id
       })
     }
   }
@@ -178,10 +181,13 @@ class User extends React.Component {
     .then((response) => {
 
       if (response.username === this.state.username) {
+        console.log(response.user_id)
         this.setState({
           open: false,
-          loggedIn: true
+          loggedIn: true,
+          userId: response.user_id
          })
+         document.getElementById('user-icon-wrapper').setAttribute('data-id', response.user_id)
       }
     })
   }
@@ -202,6 +208,8 @@ class User extends React.Component {
           password: '',
           open: false
         })
+        document.getElementById('user-icon-wrapper').removeAttribute('data-username')
+        document.getElementById('user-icon-wrapper').removeAttribute('data-id')
       }
     })
   }

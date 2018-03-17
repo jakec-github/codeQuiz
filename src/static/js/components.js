@@ -129,6 +129,22 @@ export class Result extends React.Component {
     this.props.changeLocation('home');
   }
 
+  componentDidMount = () => {
+    data = {
+      score: this.props.score,
+      quiz_id: this.props.quiz,
+      user_id: 31 // Work this out
+    }
+
+    fetch("/score", {
+      method: "POST",
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      }),
+      body: JSON.stringify(data)
+    })
+  }
+
   render(){
     return (
       <div>
