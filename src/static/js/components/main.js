@@ -97,7 +97,8 @@ export class Main extends React.Component {
                   quizSize={this.state.quizSize}
                   changeLocation={this.changeLocation}
                   quiz={this.state.quiz}
-                  userId={this.props.userId}/>
+                  userId={this.props.userId}
+                  loggedIn={this.loggedIn}/>
         </div>
       );
     }

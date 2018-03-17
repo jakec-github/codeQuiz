@@ -136,13 +136,15 @@ export class Result extends React.Component {
       user_id: this.props.userId
     }
 
-    fetch("/score", {
-      method: "POST",
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      }),
-      body: JSON.stringify(data)
-    })
+    if (this.props.loggedIn) {
+      fetch("/score", {
+        method: "POST",
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        }),
+        body: JSON.stringify(data)
+      })
+    }
   }
 
   render(){

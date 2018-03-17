@@ -43,7 +43,8 @@ class App extends React.Component {
         </header>
         <main>
           <div id="quiz">
-            <Main userId={this.state.userId}/>
+            <Main userId={this.state.userId}
+                  loggedIn={this.state.loggedIn}/>
           </div>
         </main>
       </div>

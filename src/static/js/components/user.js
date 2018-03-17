@@ -20,10 +20,9 @@ export class User extends React.Component {
     console.log(document.getElementById('react-entry').dataset.user);
     if (document.getElementById('react-entry').dataset.user === "true") {
       this.setState({
-        loggedIn: true,
-        username: document.getElementById('react-entry').dataset.username,
-        userId: document.getElementById('react-entry').dataset.id
+        username: document.getElementById('react-entry').dataset.username
       })
+      this.props.handleLogin(document.getElementById('react-entry').dataset.id)
     }
   }
 
