@@ -130,10 +130,10 @@ export class Result extends React.Component {
   }
 
   componentDidMount = () => {
-    data = {
+    let data = {
       score: this.props.score,
       quiz_id: this.props.quiz,
-      user_id: 31 // Work this out
+      user_id: this.props.userId
     }
 
     fetch("/score", {
