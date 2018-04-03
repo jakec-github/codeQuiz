@@ -44,14 +44,43 @@ def get_all_quizzes():
     quizzes = db_session.query(Quiz).all()
     all_quizzes = []
     for quiz in quizzes:
+        print("Constructing a quiz")
         quiz_dict = {
             "id": quiz.id,
             "name": quiz.name,
-            "description": quiz.description
+            "description": quiz.description,
+            "length": db_session.query(QuizJoin).filter_by(quiz_id = quiz.id).count()
         }
         all_quizzes.append(quiz_dict)
+        print('Finished constructing the quiz')
     return jsonify(all_quizzes), 200
 
+@app.route("/userscores", methods=["POST"])
+def get_scores():
+    # Takes a user id to get all scores pertaining to a user
+    # This route needs to be authenticated
+    data = request.data.decode("utf-8")
+    print("----")
+    print(data)
+
+    data = loads(data)
+
+    # print(login_session)
+    # print(data.user_id)
+
+    if "user_id" not in login_session or login_session["user_id"] is not data["user_id"]:
+        return "Forbidden", 403
+
+    scores = db_session.query(Score).filter_by(user_id=data["user_id"]).all()
+
+    all_scores = []
+    for score in scores:
+        score_dict = {
+            "quiz_id": score.quiz_id,
+            "score": score.score
+        }
+        all_scores.append(score_dict)
+    return jsonify(all_scores), 200
 
 @app.route("/choosequiz/<int:quiz_id>")
 def choose_quiz(quiz_id):
@@ -184,6 +213,11 @@ def score():
     print(data)
 
     data = loads(data)
+
+    if "user_id" not in login_session or login_session["user_id"] is not data["user_id"]:
+        print(type(login_session["user_id"]))
+        print(type(data["user_id"]))
+        return "Forbidden", 403
 
     current_score = db_session.query(Score) \
                     .filter_by(user_id=data["user_id"]) \

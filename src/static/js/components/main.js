@@ -54,6 +54,7 @@ export class Main extends React.Component {
   }
 
   selectQuiz = (quiz) => {
+    console.log(quiz)
     this.setState({quiz: quiz});
   }
 
@@ -65,11 +66,14 @@ export class Main extends React.Component {
       return (
         <div className="App">
           <Home changeLocation={this.changeLocation}
-                selectQuiz={this.selectQuiz} />
+                selectQuiz={this.selectQuiz}
+                userId={this.props.userId}
+                loggedIn={this.props.loggedIn} />
         </div>
       )
     }
     else if (this.state.location === 'start'){
+      console.log(this.state.quiz)
       return (
         <div className="App">
           <Start changeLocation={this.changeLocation}
@@ -98,7 +102,7 @@ export class Main extends React.Component {
                   changeLocation={this.changeLocation}
                   quiz={this.state.quiz}
                   userId={this.props.userId}
-                  loggedIn={this.loggedIn}/>
+                  loggedIn={this.props.loggedIn}/>
         </div>
       );
     }

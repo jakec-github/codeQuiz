@@ -33,7 +33,7 @@ class App extends React.Component {
     return (
       <div id="react-wrapper">
         <header>
-          <h2>&lt;code-quiz&gt;</h2>
+          <h2>&lt;code_quiz&gt;</h2>
           <div id="user-icon-wrapper">
             <User handleLogin={this.handleLogin}
                   handleLogOut={this.handleLogOut}

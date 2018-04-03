@@ -7,9 +7,10 @@ export class Home extends React.Component {
 
   constructor(props) {
     super(props)
-
+    // Make sure to wip scores if unauthenticated
     this.state = {
-      allQuizzes: []
+      allQuizzes: [],
+      scores: []
     }
   }
 
@@ -19,7 +20,29 @@ export class Home extends React.Component {
     .then(data => {
       console.log(data);
       this.setState({allQuizzes: data})
-    });
+
+      if (this.props.loggedIn) {
+        let query = {
+          user_id: parseInt(this.props.userId, 10), // need to find this info
+        }
+        return fetch('/userscores', {
+          method: 'post',
+          headers: {
+            "Content-type": "application/json"
+          },
+          credentials: 'include',
+          body: JSON.stringify(query)
+        })
+      }
+      return false
+
+    })
+    .then(data => data ? data.json() : false)
+    .then(data => {
+      console.log('All scores for user')
+      console.log(data)
+      this.setState({scores: data ? data : [] })
+    })
   }
 
   handleQuizClick = (event) => {
@@ -30,9 +53,25 @@ export class Home extends React.Component {
 
   render() {
     let quizzes = []
+
+    // Probably best to use a forEach here since no array is returned
     this.state.allQuizzes.map((quiz, i) => {
       console.log('Looping through');
-      quizzes.push(<article className="quiz-option btn" data-id={quiz.id} onClick={this.handleQuizClick} key={i.toString()}>{quiz.name}</article>)
+      let hasScore = false
+      this.state.scores.forEach((score) => {
+        if (score.quiz_id === quiz.id) {
+          hasScore = (score.score / quiz.length) * 100
+          // TODO: change to for loop in order to add break
+        }
+      })
+      // TODO: See if this can be condensed by injecting <p> with ternary
+      if (hasScore) {
+
+        quizzes.push(<article className="quiz-option btn" data-id={quiz.id} onClick={this.handleQuizClick} key={i.toString()}>{quiz.name}<p>{hasScore}%</p></article>)
+      }
+      else {
+        quizzes.push(<article className="quiz-option btn" data-id={quiz.id} onClick={this.handleQuizClick} key={i.toString()}>{quiz.name}</article>)
+      }
     })
 
     return (
@@ -133,7 +172,7 @@ export class Result extends React.Component {
     let data = {
       score: this.props.score,
       quiz_id: this.props.quiz,
-      user_id: this.props.userId
+      user_id: parseInt(this.props.userId, 10)
     }
 
     if (this.props.loggedIn) {
@@ -142,6 +181,7 @@ export class Result extends React.Component {
         headers: new Headers({
           'Content-Type': 'application/json'
         }),
+        credentials: 'include',
         body: JSON.stringify(data)
       })
     }
