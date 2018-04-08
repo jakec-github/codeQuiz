@@ -42,7 +42,7 @@ gulp.task('scripts', function(){
     }))
     .pipe(uglify())
     .pipe(gulp.dest('./src/static/js'));
-    
+
     // Sticking these together is inefficient
     gulp.src('./src/static/js/add.js')
     .pipe(plumber())

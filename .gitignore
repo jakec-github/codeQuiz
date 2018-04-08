@@ -36,3 +36,11 @@ bower_components/
 build/
 dist/
 maps/
+
+# Virtualenv #
+#####################
+.Python
+bin/
+include/
+lib/
+pip-selfcheck.json

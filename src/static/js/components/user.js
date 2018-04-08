@@ -1,103 +1,104 @@
-/*jshint esversion: 6 */
-import React from 'react';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-export class User extends React.Component {
+export default class extends React.Component {
+  static propTypes = {
+    handleLogin: PropTypes.func.isRequired,
+    handleLogOut: PropTypes.func.isRequired,
+    loggedIn: PropTypes.bool.isRequired,
+  }
 
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       open: false,
       type: 'sign up',
       username: '',
-      password: ''
-    };
+      password: '',
+    }
   }
 
   componentDidMount = () => {
     // Pretty sure this can be done with an actual boolean
     console.log('-------')
-    console.log(document.getElementById('react-entry').dataset.user);
-    if (document.getElementById('react-entry').dataset.user === "true") {
+    console.log(document.getElementById('react-entry').dataset.user)
+    if (document.getElementById('react-entry').dataset.user === 'true') {
       this.setState({
-        username: document.getElementById('react-entry').dataset.username
+        username: document.getElementById('react-entry').dataset.username,
       })
       this.props.handleLogin(document.getElementById('react-entry').dataset.id)
     }
   }
 
   handleUserIconClick = () => {
-    this.setState({open: true});
+    this.setState({ open: true })
   }
 
   handleEscapeClick = () => {
-    this.setState({open: false});
+    this.setState({ open: false })
   }
 
   handleTypeClick = (event) => {
-    this.setState({type: event.target.dataset.type})
+    this.setState({ type: event.target.dataset.type })
   }
 
   handleInputChange = (event) => {
-    this.setState({[event.target.name]: event.target.value})
+    this.setState({ [event.target.name]: event.target.value })
   }
 
   handleSubmitClick = (event) => {
-    event.preventDefault();
-    let data = {
+    event.preventDefault()
+    const data = {
       username: this.state.username,
-      password: this.state.password
+      password: this.state.password,
     }
     console.log(event.target.name)
     fetch(`/${event.target.name}`, {
       method: 'post',
       headers: {
-        "Content-type": "application/json"
+        'Content-type': 'application/json',
       },
       credentials: 'include',
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
-    .then((data) => {
-      return data.json()
-    })
-    .then((response) => {
-
-      if (response.username === this.state.username) {
-        console.log(response.user_id)
-        this.setState({
-          open: false,
-          loggedIn: true,
-          username: response.username
-         })
-         console.log(this.props);
-         console.log(this.props.handlelogin);
-         this.props.handleLogin(response.user_id)
-      }
-    })
+      .then(response => response.json())
+      .then((response) => {
+        if (response.username === this.state.username) {
+          console.log(response.user_id)
+          this.setState({
+            open: false,
+            username: response.username,
+          })
+          console.log(this.props)
+          console.log(this.props.handleLogin)
+          this.props.handleLogin(response.user_id)
+        }
+      })
   }
 
   handleLogOut = () => {
-    console.log('Logging out');
+    console.log('Logging out')
     fetch('/logout', {
       method: 'post',
       credentials: 'include',
     })
-    .then((response) => {
-      // password should be removed earlier
-      console.log('Almost there')
-      if (response.status === 200) {
-        this.setState({
-          username: '',
-          password: '',
-          open: false
-        })
-        this.props.handleLogOut()
-      }
-    })
+      .then((response) => {
+        // password should be removed earlier
+        console.log('Almost there')
+        if (response.status === 200) {
+          this.setState({
+            username: '',
+            password: '',
+            open: false,
+          })
+          this.props.handleLogOut()
+        }
+      })
   }
 
   render() {
-    let icon = this.props.loggedIn ? "static/img/118-user-check.svg" : "static/img/114-user.svg";
+    const icon = this.props.loggedIn ? 'static/img/118-user-check.svg' : 'static/img/114-user.svg'
     return (
       <div id="react-wrapper">
         <img alt="User authentication" src={icon} onClick={this.handleUserIconClick} />
@@ -114,15 +115,15 @@ export class User extends React.Component {
                 </article>
                 {this.state.type === 'sign up' &&
                   <form>
-                    <input name="username" placeholder="Username" onChange={this.handleInputChange}/>
-                    <input name="password" type="password" placeholder="Password"/>
+                    <input name="username" placeholder="Username" onChange={this.handleInputChange} />
+                    <input name="password" type="password" placeholder="Password" />
                     <input className="submit" name="register" onClick={this.handleSubmitClick} type="submit" />
                   </form>
                 }
                 {this.state.type === 'login' &&
                   <form>
-                    <input name="username" placeholder="Username" onChange={this.handleInputChange}/>
-                    <input name="password" type="password" placeholder="Password"/>
+                    <input name="username" placeholder="Username" onChange={this.handleInputChange} />
+                    <input name="password" type="password" placeholder="Password" />
                     <input className="submit" name="login" onClick={this.handleSubmitClick} type="submit" />
                   </form>
                 }

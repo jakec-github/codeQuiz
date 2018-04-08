@@ -1,10 +1,18 @@
-import React from 'react';
-import { Start, Question, Result, Home } from './quiz.js';
+import React from 'react'
+import PropTypes from 'prop-types'
+import Home from './quiz/home'
+import Start from './quiz/start'
+import Question from './quiz/question'
+import Result from './quiz/result'
 
-export class Main extends React.Component {
+export default class extends React.Component {
+  static propTypes = {
+    userId: PropTypes.string.isRequired,
+    loggedIn: PropTypes.bool.isRequired,
+  }
 
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       location: 'home',
@@ -12,100 +20,91 @@ export class Main extends React.Component {
       quiz: 0,
       questionSet: [],
       quizSize: 0,
-      score: 0
-    };
+      score: 0,
+    }
   }
-
-  // This may need adapting now there is a homepage
-  changeLocation = (newLocation) => {
-
-    if (newLocation === 'start' || newLocation === 'home') {
-      this.setState({location: newLocation,
-                     question: 0,
-                     score: 0
-      });
-    }
-    else {
-      this.setState({location: newLocation});
-    }
-  };
 
   setQuestions = (questionSet) => {
     console.log('Setting question')
     this.setState({
-      questionSet: questionSet,
-      quizSize: questionSet.length
-    });
-    console.log(this.state.questionSet);
+      questionSet,
+      quizSize: questionSet.length,
+    })
+    console.log(this.state.questionSet)
   }
 
-  iterateQuestion = () => {
-    if (this.state.question + 1 >= this.state.quizSize ){
-      // Consider resetting question
-      this.setState({location: 'result'});
+  // This may need adapting now there is a homepage
+  changeLocation = (newLocation) => {
+    if (newLocation === 'start' || newLocation === 'home') {
+      this.setState({
+        location: newLocation,
+        question: 0,
+        score: 0,
+      })
+    } else {
+      this.setState({ location: newLocation })
     }
-    else {
-        this.setState({question: this.state.question + 1});
+  };
+
+  iterateQuestion = () => {
+    if (this.state.question + 1 >= this.state.quizSize) {
+      // Consider resetting question
+      this.setState({ location: 'result' })
+    } else {
+      this.setState({ question: this.state.question + 1 })
     }
   }
 
   iterateScore = () => {
-    this.setState({score: this.state.score + 1});
+    this.setState({ score: this.state.score + 1 })
   }
 
   selectQuiz = (quiz) => {
     console.log(quiz)
-    this.setState({quiz: quiz});
+    this.setState({ quiz })
   }
 
   render() {
-    console.log('score: ' + this.state.score);
+    // console.log('score: ' + this.state.score)
     // Consider case statement
     // Also consider nesting code with jsx for a cleaner result
-    if (this.state.location === 'home'){
-      return (
-        <div className="App">
-          <Home changeLocation={this.changeLocation}
-                selectQuiz={this.selectQuiz}
-                userId={this.props.userId}
-                loggedIn={this.props.loggedIn} />
-        </div>
-      )
-    }
-    else if (this.state.location === 'start'){
-      console.log(this.state.quiz)
-      return (
-        <div className="App">
-          <Start changeLocation={this.changeLocation}
-                 quiz={this.state.quiz}
-                 setQuestions={this.setQuestions} />
-        </div>
-      );
-    }
-    else if (this.state.location === 'quiz'){
-      console.log('Loading question ' + this.state.question);
-      return (
-        <div className="App">
-          <Question iterateQuestion={this.iterateQuestion}
-                    question={this.state.question}
-                    questionSet={this.state.questionSet}
-                    iterateScore={this.iterateScore}
-                    quizSize={this.state.quizSize}/>
-        </div>
-      );
-    }
-    else if (this.state.location === 'result'){
-      return (
-        <div className="App">
-          <Result score={this.state.score}
-                  quizSize={this.state.quizSize}
-                  changeLocation={this.changeLocation}
-                  quiz={this.state.quiz}
-                  userId={this.props.userId}
-                  loggedIn={this.props.loggedIn}/>
-        </div>
-      );
-    }
-
+    return (
+      <div className="App">
+        { this.state.location === 'home' &&
+          <Home
+            changeLocation={this.changeLocation}
+            selectQuiz={this.selectQuiz}
+            userId={this.props.userId}
+            loggedIn={this.props.loggedIn}
+          />
+        }
+        { this.state.location === 'start' &&
+          <Start
+            changeLocation={this.changeLocation}
+            quiz={this.state.quiz}
+            setQuestions={this.setQuestions}
+          />
+        }
+        { this.state.location === 'quiz' &&
+          <Question
+            iterateQuestion={this.iterateQuestion}
+            question={this.state.question}
+            questionSet={this.state.questionSet}
+            iterateScore={this.iterateScore}
+            quizSize={this.state.quizSize}
+          />
+        }
+        { this.state.location === 'result' &&
+          <Result
+            score={this.state.score}
+            quizSize={this.state.quizSize}
+            changeLocation={this.changeLocation}
+            quiz={this.state.quiz}
+            userId={this.props.userId}
+            loggedIn={this.props.loggedIn}
+          />
+        }
+      </div>
+    )
   }
 }
