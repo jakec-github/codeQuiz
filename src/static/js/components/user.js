@@ -1,5 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import SignUp from './user/signup'
+import Login from './user/login'
 
 export default class extends React.Component {
   static propTypes = {
@@ -114,18 +116,16 @@ export default class extends React.Component {
                   <div id="login" className={this.state.type === 'login' ? 'type-button active' : 'type-button'} data-type="login" onClick={this.handleTypeClick}>Login</div>
                 </article>
                 {this.state.type === 'sign up' &&
-                  <form>
-                    <input name="username" placeholder="Username" onChange={this.handleInputChange} />
-                    <input name="password" type="password" placeholder="Password" />
-                    <input className="submit" name="register" onClick={this.handleSubmitClick} type="submit" />
-                  </form>
+                  <SignUp
+                    handleInputChange={this.handleInputChange}
+                    handleSubmitClick={this.handleSubmitClick}
+                  />
                 }
                 {this.state.type === 'login' &&
-                  <form>
-                    <input name="username" placeholder="Username" onChange={this.handleInputChange} />
-                    <input name="password" type="password" placeholder="Password" />
-                    <input className="submit" name="login" onClick={this.handleSubmitClick} type="submit" />
-                  </form>
+                  <Login
+                    handleInputChange={this.handleInputChange}
+                    handleSubmitClick={this.handleSubmitClick}
+                  />
                 }
               </div>
 
