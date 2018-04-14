@@ -40,7 +40,7 @@ gulp.task('scripts', function(){
       basename: 'bundle',
       suffix: '.min'
     }))
-    .pipe(uglify())
+    // .pipe(uglify())
     .pipe(gulp.dest('./src/static/js'));
 
     // Sticking these together is inefficient

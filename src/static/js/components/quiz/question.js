@@ -29,7 +29,6 @@ export default class extends React.Component {
     const next = this.props.question + 1 === this.props.quizSize ? 'See result' : 'Next question'
     // Currently this is defined in three separate places
     const thisQuestion = this.props.questionSet[this.props.question]
-
     return (
       <div className="question">
         <Progress

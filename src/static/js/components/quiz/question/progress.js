@@ -15,7 +15,7 @@ export default function Progress(props) {
     <div id="total-progress">
       <div id="progress-fraction">
         <p>
-          {this.props.question + 1}/{this.props.quizSize}
+          {props.question + 1}/{props.quizSize}
         </p>
       </div>
       <div id="current-progress" style={style} />

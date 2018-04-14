@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-class Code extends React.Component {
+export default class extends React.Component {
   static propTypes = {
     question: PropTypes.number.isRequired,
     questionSet: PropTypes.arrayOf(PropTypes.object).isRequired,

@@ -18,6 +18,7 @@ export default class extends React.Component {
       type: 'sign up',
       username: '',
       password: '',
+      confirmPassword: '',
     }
   }
 
@@ -46,11 +47,20 @@ export default class extends React.Component {
   }
 
   handleInputChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value })
+    this.setState({ [event.target.name]: event.target.value.replace(' ', '') })
   }
 
   handleSubmitClick = (event) => {
     event.preventDefault()
+    console.log(this.state.username)
+    console.log(this.state.password)
+    console.log(this.state.confirmPassword)
+
+    if (this.state.password !== this.state.confirmPassword) {
+      document.getElementById('user-error').style.display = 'block'
+      return
+    }
+
     const data = {
       username: this.state.username,
       password: this.state.password,
@@ -119,12 +129,17 @@ export default class extends React.Component {
                   <SignUp
                     handleInputChange={this.handleInputChange}
                     handleSubmitClick={this.handleSubmitClick}
+                    username={this.state.username}
+                    password={this.state.password}
+                    confirmPassword={this.state.confirmPassword}
                   />
                 }
                 {this.state.type === 'login' &&
                   <Login
                     handleInputChange={this.handleInputChange}
                     handleSubmitClick={this.handleSubmitClick}
+                    username={this.state.username}
+                    password={this.state.password}
                   />
                 }
               </div>
