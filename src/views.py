@@ -24,6 +24,7 @@ from model import (Base,
 from json import loads
 import bleach
 import html
+import re
 
 app = Flask(__name__)
 app.secret_key = "super secret key"
@@ -255,6 +256,17 @@ def register():
         if username is None or password is None:
             print("Username or password missing")
             abort(400)
+        if (not re.match(r"^[\da-z]{6,32}$", username)):
+            abort(400)
+        if (not re.match(r".*[a-z].*[a-z].*", username)):
+            abort(400)
+        if (not re.match(r"[A-Za-z\d@$!%*#?&\-]{6,32}", password)):
+            print("Invalid password")
+            abort(400)
+        else:
+            print("Valid password")
+
+        # print(re.match(r"^[\da-z]{6,32}$", username))
         if db_session.query(User).filter_by(username=username).first() is not None:
             print("Username already taken")
             # This needs to inform the user
@@ -269,6 +281,7 @@ def register():
         login_session["user_id"] = user.id
         return jsonify({"username": user.username, "user_id": user.id}), 201
 
+
 @app.route("/login", methods=["GET","POST"])
 def login():
     if request.method == "POST":
@@ -277,15 +290,15 @@ def login():
         password = data["password"]
         if username is None or password is None:
             print("Username or password missing")
-            abort(400)
+            abort(401)
         user = db_session.query(User).filter_by(username=username).first()
         if not user:
             print("User not found")
             # This needs to inform the user
-            abort(400)
+            abort(401)
         if not user.verify_password(password):
             print("Incorrect password")
-            abort(400)
+            abort(401)
             # This needs to inform the user
         login_session["user"] = user.username
         login_session["user_id"] = user.id

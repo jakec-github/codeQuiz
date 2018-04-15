@@ -23,7 +23,7 @@ export default function SignUp({
       <AuthError
         usernameLength={!/^[\da-z]{6,32}$/.test(username)}
         usernameLetters={!/.*[a-z].*[a-z].*/.test(username)}
-        passwordLength={!/[^\s]{6,32}/.test(password)}
+        passwordLength={!/[A-Za-z\d@$!%*#?&-]{6,32}/.test(password)}
         passwordMatch={password !== confirmPassword}
         incorrectDetails={false}
       />

@@ -19,6 +19,7 @@ export default class extends React.Component {
       username: '',
       password: '',
       confirmPassword: '',
+      loginError: false,
     }
   }
 
@@ -56,8 +57,7 @@ export default class extends React.Component {
     console.log(this.state.password)
     console.log(this.state.confirmPassword)
 
-    if (this.state.password !== this.state.confirmPassword) {
-      document.getElementById('user-error').style.display = 'block'
+    if (this.state.password !== this.state.confirmPassword && event.target.name === 'register') {
       return
     }
 
@@ -74,12 +74,24 @@ export default class extends React.Component {
       credentials: 'include',
       body: JSON.stringify(data),
     })
-      .then(response => response.json())
       .then((response) => {
+        if (response.status === 401) {
+          this.setState({
+            loginError: true,
+          })
+          return 'Error'
+        }
+        return response.json()
+      })
+      .then((response) => {
+        if (response === 'Error') {
+          return
+        }
         if (response.username === this.state.username) {
           console.log(response.user_id)
           this.setState({
             open: false,
+            // Does username need to be set here?
             username: response.username,
           })
           console.log(this.props)
@@ -140,6 +152,7 @@ export default class extends React.Component {
                     handleSubmitClick={this.handleSubmitClick}
                     username={this.state.username}
                     password={this.state.password}
+                    loginError={this.state.loginError}
                   />
                 }
               </div>
