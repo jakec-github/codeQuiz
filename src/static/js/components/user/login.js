@@ -10,7 +10,13 @@ Login.propTypes = {
   loginError: PropTypes.bool.isRequired,
 }
 
-export default function Login(props) {
+export default function Login({
+  handleInputChange,
+  handleSubmitClick,
+  username,
+  password,
+  loginError,
+}) {
   return (
     <form>
       <AuthError
@@ -18,11 +24,11 @@ export default function Login(props) {
         usernameLetters={false}
         passwordLength={false}
         passwordMatch={false}
-        incorrectDetails={props.loginError}
+        incorrectDetails={loginError}
       />
-      <input name="username" placeholder="Username" onChange={props.handleInputChange} value={props.username} />
-      <input name="password" type="password" placeholder="Password" onChange={props.handleInputChange} value={props.password} />
-      <input className="submit" name="login" onClick={props.handleSubmitClick} type="submit" />
+      <input name="username" placeholder="Username" onChange={handleInputChange} value={username} />
+      <input name="password" type="password" placeholder="Password" onChange={handleInputChange} value={password} />
+      <input className="submit" name="login" onClick={handleSubmitClick} type="submit" />
     </form>
   )
 }

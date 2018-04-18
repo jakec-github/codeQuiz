@@ -40,7 +40,12 @@ export default class extends React.Component {
   }
 
   handleEscapeClick = () => {
-    this.setState({ open: false })
+    this.setState({
+      open: false,
+      loginError: false,
+      password: '',
+      confirmPassword: '',
+    })
   }
 
   handleTypeClick = (event) => {
