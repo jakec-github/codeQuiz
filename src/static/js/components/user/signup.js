@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import AuthError from './auth_error'
+import AuthError from '../common/auth_error'
 
 SignUp.propTypes = {
   handleInputChange: PropTypes.func.isRequired,

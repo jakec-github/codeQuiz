@@ -5,16 +5,17 @@ export default class extends React.Component {
   static propTypes = {
     selectQuiz: PropTypes.func.isRequired,
     changeLocation: PropTypes.func.isRequired,
-    userId: PropTypes.string.isRequired,
+    userId: PropTypes.number.isRequired,
     loggedIn: PropTypes.bool.isRequired,
   }
 
   constructor(props) {
     super(props)
-    // Make sure to wip scores if unauthenticated
+    // Make sure to wipe scores if unauthenticated
+    // Scores also need to show up on authenticating
     this.state = {
       allQuizzes: [],
-      scores: [],
+      allScores: [],
     }
   }
 
@@ -27,7 +28,7 @@ export default class extends React.Component {
 
         if (this.props.loggedIn) {
           const query = {
-            user_id: parseInt(this.props.userId, 10), // need to find this info
+            user_id: parseInt(this.props.userId, 10),
           }
           return fetch('/userscores', {
             method: 'post',
@@ -44,7 +45,7 @@ export default class extends React.Component {
       .then((data) => {
         console.log('All scores for user')
         console.log(data)
-        this.setState({ scores: data || [] })
+        this.setState({ allScores: data || [] })
       })
   }
 
@@ -57,11 +58,10 @@ export default class extends React.Component {
   render() {
     const quizzes = []
 
-    // Probably best to use a forEach here since no array is returned
     this.state.allQuizzes.forEach((quiz, i) => {
       console.log('Looping through')
       let hasScore = false
-      this.state.scores.forEach((score) => {
+      this.state.allScores.forEach((score) => {
         if (score.quiz_id === quiz.id) {
           hasScore = (score.score / quiz.length) * 100
           // TODO: change to for loop in order to add break

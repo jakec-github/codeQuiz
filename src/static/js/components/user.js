@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+
 import SignUp from './user/signup'
 import Login from './user/login'
 
@@ -14,8 +15,8 @@ export default class extends React.Component {
     super(props)
 
     this.state = {
-      open: false,
-      type: 'sign up',
+      authOpen: false,
+      authType: 'sign up',
       username: '',
       password: '',
       confirmPassword: '',
@@ -28,6 +29,7 @@ export default class extends React.Component {
     console.log('-------')
     console.log(document.getElementById('react-entry').dataset.user)
     if (document.getElementById('react-entry').dataset.user === 'true') {
+      // Can't see the use in setting username here. That should just be for the fields
       this.setState({
         username: document.getElementById('react-entry').dataset.username,
       })
@@ -36,12 +38,12 @@ export default class extends React.Component {
   }
 
   handleUserIconClick = () => {
-    this.setState({ open: true })
+    this.setState({ authOpen: true })
   }
 
   handleEscapeClick = () => {
     this.setState({
-      open: false,
+      authOpen: false,
       loginError: false,
       password: '',
       confirmPassword: '',
@@ -49,7 +51,7 @@ export default class extends React.Component {
   }
 
   handleTypeClick = (event) => {
-    this.setState({ type: event.target.dataset.type })
+    this.setState({ authType: event.target.dataset.type })
   }
 
   handleInputChange = (event) => {
@@ -95,7 +97,7 @@ export default class extends React.Component {
         if (response.username === this.state.username) {
           console.log(response.user_id)
           this.setState({
-            open: false,
+            authOpen: false,
             // Does username need to be set here?
             username: response.username,
           })
@@ -119,7 +121,7 @@ export default class extends React.Component {
           this.setState({
             username: '',
             password: '',
-            open: false,
+            authOpen: false,
           })
           this.props.handleLogOut()
         }
@@ -131,7 +133,7 @@ export default class extends React.Component {
     return (
       <div id="react-wrapper">
         <img alt="User authentication" src={icon} onClick={this.handleUserIconClick} />
-        {this.state.open &&
+        {this.state.authOpen &&
           <article id="user-auth">
             <div id="escape-wrapper">
               <p id="auth-escape" onClick={this.handleEscapeClick}>X</p>
@@ -139,10 +141,10 @@ export default class extends React.Component {
             {!this.props.loggedIn &&
               <div id="auth-wrapper">
                 <article id="type-selector">
-                  <div id="sign-up" className={this.state.type === 'sign up' ? 'type-button active' : 'type-button'} data-type="sign up" onClick={this.handleTypeClick}>Sign Up</div>
-                  <div id="login" className={this.state.type === 'login' ? 'type-button active' : 'type-button'} data-type="login" onClick={this.handleTypeClick}>Login</div>
+                  <div id="sign-up" className={this.state.authType === 'sign up' ? 'type-button active' : 'type-button'} data-type="sign up" onClick={this.handleTypeClick}>Sign Up</div>
+                  <div id="login" className={this.state.authType === 'login' ? 'type-button active' : 'type-button'} data-type="login" onClick={this.handleTypeClick}>Login</div>
                 </article>
-                {this.state.type === 'sign up' &&
+                {this.state.authType === 'sign up' &&
                   <SignUp
                     handleInputChange={this.handleInputChange}
                     handleSubmitClick={this.handleSubmitClick}
@@ -151,7 +153,7 @@ export default class extends React.Component {
                     confirmPassword={this.state.confirmPassword}
                   />
                 }
-                {this.state.type === 'login' &&
+                {this.state.authType === 'login' &&
                   <Login
                     handleInputChange={this.handleInputChange}
                     handleSubmitClick={this.handleSubmitClick}

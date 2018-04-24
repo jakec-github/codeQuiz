@@ -1,20 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+
 export default class extends React.Component {
   static propTypes = {
-    quizSize: PropTypes.number.isRequired,
+    // quizSize: PropTypes.number.isRequired,
     score: PropTypes.number.isRequired,
-    quiz: PropTypes.number.isRequired,
+    quizId: PropTypes.string.isRequired,
     userId: PropTypes.string.isRequired,
     loggedIn: PropTypes.bool.isRequired,
     changeLocation: PropTypes.func.isRequired,
+    questionSet: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
 
   componentDidMount = () => {
     const data = {
       score: this.props.score,
-      quiz_id: this.props.quiz,
+      quiz_id: this.props.quizId,
       user_id: parseInt(this.props.userId, 10),
     }
 
@@ -38,7 +40,7 @@ export default class extends React.Component {
     return (
       <div>
         <p>You got...</p>
-        <p>{this.props.score} out of {this.props.quizSize}</p>
+        <p>{this.props.score} out of {this.props.questionSet.length}</p>
         <div id="menu" className="nav btn" onClick={this.handleMenuClick}>Menu</div>
       </div>
     )

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 export default class extends React.Component {
   static propTypes = {
-    question: PropTypes.number.isRequired,
+    questionNumber: PropTypes.number.isRequired,
     questionSet: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
 
@@ -26,7 +26,7 @@ export default class extends React.Component {
   }
 
   render() {
-    const thisQuestion = this.props.questionSet[this.props.question]
+    const thisQuestion = this.props.questionSet[this.props.questionNumber]
     const codes = []
     const tabs = []
     for (let i = 0; i < thisQuestion.codes.length; i += 1) {

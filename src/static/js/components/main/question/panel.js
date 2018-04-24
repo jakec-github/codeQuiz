@@ -3,31 +3,39 @@ import PropTypes from 'prop-types'
 
 export default class extends React.Component {
   static propTypes = {
-    question: PropTypes.number.isRequired,
+    questionNumber: PropTypes.number.isRequired,
     questionSet: PropTypes.arrayOf(PropTypes.object).isRequired,
     iterateQuestion: PropTypes.func.isRequired,
     iterateScore: PropTypes.func.isRequired,
-    changeStatus: PropTypes.func.isRequired,
-    status: PropTypes.string.isRequired,
+    changeQuestionStatus: PropTypes.func.isRequired,
+    questionStatus: PropTypes.string.isRequired,
     next: PropTypes.string.isRequired,
+    // quizSize: PropTypes.number.isRequired,
+    changeLocation: PropTypes.func.isRequired,
   }
 
   handleNextClick = () => {
-    this.props.iterateQuestion()
-    this.props.changeStatus('answers')
+    if (this.props.questionNumber < this.props.questionSet.length - 1) {
+      this.props.iterateQuestion()
+    } else {
+      this.props.changeLocation('result')
+    }
+
+    // this.props.oldIterateQuestion()
+    this.props.changeQuestionStatus('answers')
   }
 
   handleAnswerClick = (event) => {
     const { correct } = event.target.dataset
     const data = {
-      id: this.props.questionSet[this.props.question].id,
+      id: this.props.questionSet[this.props.questionNumber].id,
       correct,
     }
     if (correct === 'correct') {
-      this.props.changeStatus('correct')
+      this.props.changeQuestionStatus('correct')
       this.props.iterateScore()
     } else {
-      this.props.changeStatus('incorrect')
+      this.props.changeQuestionStatus('incorrect')
     }
     console.log('updated')
     fetch('/difficulty', {
@@ -42,13 +50,13 @@ export default class extends React.Component {
   }
 
   handleLearnClick = () => {
-    this.props.changeStatus('explanation')
+    this.props.changeQuestionStatus('explanation')
   }
 
   render() {
     // Consider nesting if statement in return statement
-    const thisQuestion = this.props.questionSet[this.props.question]
-    if (this.props.status === 'answers') {
+    const thisQuestion = this.props.questionSet[this.props.questionNumber]
+    if (this.props.questionStatus === 'answers') {
       const answers = []
 
       for (let i = 0; i < thisQuestion.duds.length; i += 1) {
@@ -67,7 +75,7 @@ export default class extends React.Component {
           {answers}
         </div>
       )
-    } else if (this.props.status === 'correct') {
+    } else if (this.props.questionStatus === 'correct') {
       return (
         <div className="panel" id="correct-panel">
           <p>Correct</p>
@@ -75,7 +83,7 @@ export default class extends React.Component {
           <article className="answer btn" id="next" onClick={this.handleNextClick}>{this.props.next}</article>
         </div>
       )
-    } else if (this.props.status === 'incorrect') {
+    } else if (this.props.questionStatus === 'incorrect') {
       return (
         <div className="panel" id="incorrect-panel">
           <p>Wrong Answer!</p>
