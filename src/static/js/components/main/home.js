@@ -55,6 +55,10 @@ export default class extends React.Component {
     this.props.changeLocation('start')
   }
 
+  handleCreateClick = () => {
+    this.props.changeLocation('creator')
+  }
+
   render() {
     const quizzes = []
 
@@ -79,6 +83,9 @@ export default class extends React.Component {
       <div className="home">
         <p>Pick a quiz</p>
         {quizzes}
+        { this.props.userId.length &&
+          <article className="quiz-option btn" onClick={this.handleCreateClick}>Make a quiz</article>
+        }
       </div>
     )
   }

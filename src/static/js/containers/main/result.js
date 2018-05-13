@@ -1,6 +1,6 @@
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { store, CHANGE_LOCATION } from '../../store'
+// import { store, CHANGE_LOCATION } from '../../store'
 import { mainActionCreators } from '../../reducers/main'
 import Result from '../../components/main/result'
 

@@ -251,8 +251,8 @@ def register():
     if request.method == "POST":
         # if using json request.json.get('username')
         data = request.get_json()
-        username = data["username"]
-        password = data["password"]
+        username = bleach.clean(data["username"])
+        password = bleach.clean(data["password"])
         if username is None or password is None:
             print("Username or password missing")
             abort(400)
@@ -315,8 +315,155 @@ def log_out():
     del login_session["user"]
 
     return "Logged out", 200
-# Admin routes
 
+@app.route("/new", methods=["POST"])
+def new():
+
+    # Extract data from response
+    data = request.data.decode("utf-8")
+    print("----")
+    print(data)
+    data = loads(data)
+
+    # Authenticate
+    if "user_id" not in login_session or login_session["user_id"] is not data["user_id"]:
+        # print(type(login_session["user_id"]))
+        # print(type(data["user_id"]))
+        # print(type(login_session))
+        # print(login_session.keys())
+        return "Forbidden", 403
+
+    # Extract quiz from data
+    quiz = data["quiz"]
+    questions = data["questions"]
+
+
+    ###########################
+    # Data must be cleaned
+
+    # Validate data
+
+    ## Check questions length 3 or more
+    if len(questions) < 3:
+        return "Bad Request", 400
+
+    ## Check there is a valid title
+    if not isinstance(quiz["title"], str) or len(quiz["title"]) == 0:
+        print("1")
+        return "Bad Request", 400
+
+    ## Check there is a valid description
+    if not isinstance(quiz["description"], str) or len(quiz["description"]) == 0:
+        print("2")
+        return "Bad Request", 400
+
+    ## Check there is a number for timer
+    if not isinstance(quiz["timer"], int) or quiz["timer"] < 0 or quiz["timer"] > 30:
+        print("3")
+        return "Bad Request", 400
+
+    ## For each question
+    for question in questions:
+
+    ### Check valid question
+        if not isinstance(question["question"], str) or len(question["question"]) == 0:
+            print("4")
+            return "Bad Request", 400
+
+    ### Check codes are valid format
+        if len(question["codes"]) > 3:
+            print("5")
+            return "Bad Request", 400
+        # Need to confirm these
+        valid_codes = ["html", "css", "javascript", "python"]
+
+        for code in question["codes"]:
+            if not code["language"] in valid_codes:
+                print("6")
+                return "Bad Request", 400
+
+            if not isinstance(code["contents"], str) or len(code["contents"]) == 0:
+                print("7")
+                return "Bad Request", 400
+
+    ### Check valid answer
+        if not isinstance(question["answer"], str) or len(question["answer"]) == 0:
+            print("8")
+            return "Bad Request", 400
+
+    ### Check there is between 1 and 5 duds
+        if len(question["duds"]) < 1 or len(question["duds"]) > 5:
+            print("9")
+            return "Bad Request", 400
+    ### Check that the duds are all valid strings
+        for dud in question["duds"]:
+            if not isinstance(dud, str) or len(dud) == 0:
+                print("10")
+                return "Bad Request", 400
+
+    ### Check that there is a valid explanation
+        if not isinstance(question["explanation"], str) or len(question["explanation"]) == 0:
+            print("11")
+            return "Bad Request", 400
+
+    # Add quiz to database
+    print('Validated')
+
+    new_quiz = Quiz(
+        name=bleach.clean(quiz["title"]),
+        description=bleach.clean(quiz["description"]),
+        time_limit=bleach.clean(quiz["timer"]),
+        visible=True,
+        creator=data["user_id"]
+    )
+
+    db_session.add(new_quiz)
+    db_session.flush()
+    print("Added quiz")
+
+    for question in questions:
+
+        new_question = Question(
+            text=bleach.clean(question["question"]),
+            answer=bleach.clean(question["answer"]),
+            explanation=bleach.clean(question["explanation"]),
+            correct_replies=0,
+            incorrect_replies=0
+        )
+        db_session.add(new_question)
+        db_session.flush()
+        print("Added question")
+
+        new_quiz_join = QuizJoin(
+            question_id=new_question.id,
+            quiz_id=new_quiz.id
+        )
+        db_session.add(new_quiz_join)
+        print("Added quizjoin")
+
+        for dud in question["duds"]:
+            new_dud = Dud(question_id=new_question.id,
+                          text=bleach.clean(dud))
+            db_session.add(new_dud)
+
+            print("Added dud", dud)
+
+        for code in question["codes"]:
+            new_code = Code(question_id=new_question.id,
+                            type=bleach.clean(code["language"]),
+                            sample=bleach.clean(code["contents"])
+            )
+            db_session.add(new_code)
+
+            print("Added code", code)
+
+    db_session.commit()
+    print("Added to database")
+
+    return "OK", 200
+
+
+# Admin routes
 
 @app.route("/add", methods=["GET", "POST"])
 def add():
