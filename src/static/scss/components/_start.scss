@@ -1,0 +1,10 @@
+.start {
+  &__title {
+    color: $colour-primary-lightest;
+    font-size: 2.2em;
+  }
+
+  &__description {
+    font-size: $default-font-size;
+  }
+}

@@ -35,10 +35,12 @@ export default class extends React.Component {
   render() {
     return (
       <div className="start">
-        <h1>{this.state.quizData.name}</h1>
-        <p>{this.state.quizData.description}</p>
-        <p>You have {this.state.quizData.timeLimit / 60} minutes</p>
-        <div id="start-button" className="nav btn" onClick={this.handleStartClick}>Start</div>
+        <h1 className="start__title">{this.state.quizData.name}</h1>
+        <p className="start__description">{this.state.quizData.description}</p>
+        { this.state.quizData.timeLimit > 0 &&
+          <p className="start__timer">You have {this.state.quizData.timeLimit / 60} minutes</p>
+        }
+        <div id="start-button" className="button button--nav" onClick={this.handleStartClick}>Start</div>
       </div>
     )
   }

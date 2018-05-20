@@ -128,21 +128,23 @@ export default class extends React.Component {
       })
   }
 
+  // <div className="user__escape-box" id="escape-wrapper">
+  //   <p className="user__escape" id="auth-escape" onClick={this.handleEscapeClick}>X</p>
+  // </div>
+
   render() {
     const icon = this.props.loggedIn ? 'static/img/118-user-check.svg' : 'static/img/114-user.svg'
     return (
-      <div id="react-wrapper">
-        <img alt="User authentication" src={icon} onClick={this.handleUserIconClick} />
+      <div className="user" id="react-wrapper">
+        <img className="user__image" alt="User authentication" src={icon} onClick={this.handleUserIconClick} />
         {this.state.authOpen &&
-          <article id="user-auth">
-            <div id="escape-wrapper">
-              <p id="auth-escape" onClick={this.handleEscapeClick}>X</p>
-            </div>
+          <article className="user__auth" id="user-auth">
+            <p className="user__escape" id="auth-escape" onClick={this.handleEscapeClick}>X</p>
             {!this.props.loggedIn &&
-              <div id="auth-wrapper">
-                <article id="type-selector">
-                  <div id="sign-up" className={this.state.authType === 'sign up' ? 'type-button active' : 'type-button'} data-type="sign up" onClick={this.handleTypeClick}>Sign Up</div>
-                  <div id="login" className={this.state.authType === 'login' ? 'type-button active' : 'type-button'} data-type="login" onClick={this.handleTypeClick}>Login</div>
+              <div className="user__auth-box" id="auth-wrapper">
+                <article className="user__auth-type u-margin-top-small" id="type-selector">
+                  <div id="sign-up" className={this.state.authType === 'sign up' ? 'user__type-button user__type-button--active' : 'user__type-button'} data-type="sign up" onClick={this.handleTypeClick}>Sign Up</div>
+                  <div id="login" className={this.state.authType === 'login' ? 'user__type-button user__type-button--active' : 'user__type-button'} data-type="login" onClick={this.handleTypeClick}>Login</div>
                 </article>
                 {this.state.authType === 'sign up' &&
                   <SignUp
@@ -167,8 +169,8 @@ export default class extends React.Component {
             }
             {this.props.loggedIn &&
               <div id="username-wrapper">
-                <p>You are logged in as {this.state.username}</p>
-                <button onClick={this.handleLogOut}>Log Out</button>
+                <p className="user__text u-margin-top-medium" >You are logged in as {this.state.username}</p>
+                <button className="button button--nav u-margin-bottom-medium" onClick={this.handleLogOut}>Log Out</button>
               </div>
             }
           </article>

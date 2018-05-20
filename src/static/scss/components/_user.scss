@@ -1,0 +1,138 @@
+.user {
+  position: absolute;
+  z-index: 10;
+  top: 5%;
+  right: 8%;
+  transform: translate(50%, -50%);
+  text-align: center;
+
+  &__image{
+
+    height: 3rem;
+    filter: invert(100%);
+    position: relative;
+  }
+
+  &__auth {
+    position: absolute;
+    color: $colour-primary-lightest;
+    width: 90vw;
+    background-image: -webkit-linear-gradient(top left, $colour-primary-light, $colour-primary-dark);
+    background-image: -o-linear-gradient(top left, $colour-primary-light, $colour-primary-dark);
+    background-image: linear-gradient(to bottom right, $colour-primary-light, $colour-primary-dark);
+    border-radius: $card-radius;
+    top: 4rem;
+    right: -.6rem;
+    box-shadow: $card-shadow;
+
+    &::before {
+      content: "";
+      height: 1rem;
+      width: 1rem;
+      background-color: $colour-primary-light;
+      position: absolute;
+      top: -1rem;
+      right: 1.5rem;
+      -webkit-clip-path: polygon(50% 0, 100% 100%, 0 100%);
+      clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    }
+  }
+
+  &__escape {
+    display: block;
+    position: absolute;
+    top: 0rem;
+    right: 2rem;
+    font-size: 1.5rem;
+    height: 3rem;
+    width: 3rem;
+    text-align: center;
+    line-height: 200%;
+    cursor: pointer;
+    background-color: $colour-highlight;
+    border-radius: 50%;
+  }
+
+  &__auth-type {
+    width: 50%;
+    margin: auto;
+    padding: 0;
+    overflow: hidden;
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+
+  &__type-button {
+    display: inline-block;
+    padding: 5px 0;
+    width: 46%;
+    background-color: #222222;
+    text-align: center;
+    &:first-child {
+      padding-right: 5px;
+      border-radius: 15px 0 0 15px;
+    }
+    &:last-child {
+      padding-left: 5px;
+      border-radius: 0 15px 15px 0;
+    }
+    &--active {
+      background-color: $colour-highlight;
+    }
+  }
+
+  &__form-group {
+    margin: 0 auto;
+    width: 18rem;
+    position: relative;
+  }
+
+  &__input {
+    padding: 1rem .2rem .2rem .2rem;
+    &::-webkit-input-placeholder {
+      color: transparent;
+    }
+    &:focus {
+      outline: none;
+      border-bottom: 2px solid $colour-highlight;
+    }
+  }
+
+  &__input:placeholder-shown {
+    padding: .6rem .2rem;
+    margin-bottom: 1rem;
+    min-width: 18rem;
+    border-radius: .5rem;
+    font-size: 1.5rem;
+  }
+
+  &__input:placeholder-shown + &__label {
+    position: absolute;
+    top: .85rem;
+    font-size: $default-font-size;
+  }
+
+  &__label {
+    color: #777777;
+    position: absolute;
+    top: .25rem;
+    left: .55rem;
+    margin-top: 0;
+    font-size: 1.1rem;
+    transition: all .2s;
+  }
+
+  &__submit {
+    background-color: $colour-highlight;
+    padding: .6rem;
+    border: none;
+    color: white;
+    -webkit-appearance: none;
+  }
+
+  &__text {
+    text-align: center;
+    font-size: 2.2rem;
+  }
+}

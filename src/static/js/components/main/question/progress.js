@@ -12,13 +12,13 @@ export default function Progress(props) {
     width: `${progress}%`,
   }
   return (
-    <div id="total-progress">
-      <div id="progress-fraction">
-        <p>
+    <div className="question__progress-outer" id="total-progress">
+      <div className="question__progress-score-box" id="progress-fraction">
+        <p className="question__progress-score">
           {props.questionNumber + 1}/{props.questionSet.length}
         </p>
       </div>
-      <div id="current-progress" style={style} />
+      <div className="question__progress-inner" id="current-progress" style={style} />
     </div>
   )
 }

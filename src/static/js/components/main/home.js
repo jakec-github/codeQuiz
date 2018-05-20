@@ -67,24 +67,23 @@ export default class extends React.Component {
       let hasScore = false
       this.state.allScores.forEach((score) => {
         if (score.quiz_id === quiz.id) {
-          hasScore = (score.score / quiz.length) * 100
+          hasScore = Math.floor((score.score / quiz.length) * 100)
           // TODO: change to for loop in order to add break
         }
       })
       // TODO: See if this can be condensed by injecting <p> with ternary
       if (hasScore) {
-        quizzes.push(<article className="quiz-option btn" data-id={quiz.id} onClick={this.handleQuizClick} key={i.toString()}>{quiz.name}<p>{hasScore}%</p></article>)
+        quizzes.push(<article className="button button--quiz" data-id={quiz.id} onClick={this.handleQuizClick} key={i.toString()}>{quiz.name}<div className="button__insert">{hasScore}%</div></article>)
       } else {
-        quizzes.push(<article className="quiz-option btn" data-id={quiz.id} onClick={this.handleQuizClick} key={i.toString()}>{quiz.name}</article>)
+        quizzes.push(<article className="button button--quiz" data-id={quiz.id} onClick={this.handleQuizClick} key={i.toString()}>{quiz.name}</article>)
       }
     })
 
     return (
       <div className="home">
-        <p>Pick a quiz</p>
         {quizzes}
-        { this.props.userId.length &&
-          <article className="quiz-option btn" onClick={this.handleCreateClick}>Make a quiz</article>
+        { Boolean(this.props.userId.length) &&
+          <article className="button button--nav" onClick={this.handleCreateClick}>Make a quiz</article>
         }
       </div>
     )

@@ -162,6 +162,12 @@ export default class extends React.Component {
     }
   }
 
+  changeCode = (newCode) => {
+    this.setState({
+      code: newCode,
+    })
+  }
+
   render() {
     console.log('Creator rendered')
     return (
@@ -183,29 +189,30 @@ export default class extends React.Component {
             duds={this.state.duds}
             explanation={this.state.explanation}
             updateState={this.updateState}
+            changeCode={this.changeCode}
           />
         }
         { (this.state.submitConfirm || this.state.deleteConfirm) &&
-          <div className="nav-box">
-            <div className="confirm" id="no" onClick={this.handleConfirmClick}>
+          <div className="creator__nav-box u-margin-top-tiny u-margin-bottom-tiny">
+            <div className="creator__nav creator__nav--no button button--nav u-no-margin" id="no" onClick={this.handleConfirmClick}>
               No
             </div>
-            <div className="confirm" id="yes" onClick={this.handleConfirmClick}>
+            <div className="creator__nav creator__nav--yes button button--nav" id="yes" onClick={this.handleConfirmClick}>
               Yes
             </div>
           </div>
         }
         { !(this.state.submitConfirm || this.state.deleteConfirm) &&
-          <div className="confirm-box">
-            <div className="creator-nav" id="back" onClick={this.handleNavClick}>
+          <div className="creator__nav-box u-margin-top-tiny">
+            <div className="creator__nav creator__nav--back button button--nav-blue u-no-margin" id="back" onClick={this.handleNavClick}>
               Back
             </div>
-            <div className="creator-nav" id="forward" onClick={this.handleNavClick}>
+            <div className="creator__nav creator__nav--forward button button--nav-blue" id="forward" onClick={this.handleNavClick}>
               Forward
             </div>
           </div>
         }
-        <div className="delete" onClick={this.handleDeleteClick}>
+        <div className="creator__delete button button--nav-blue" onClick={this.handleDeleteClick}>
           { this.state.deleteConfirm &&
             <p>Are you sure?</p>
           }
@@ -216,7 +223,7 @@ export default class extends React.Component {
             <p>Delete Question</p>
           }
         </div>
-        <div className="submit-quiz" onClick={this.handleSubmitClick}>
+        <div className="creator__submit-quiz button button--nav-blue" onClick={this.handleSubmitClick}>
           { this.state.submitConfirm &&
             <p>Are you sure?</p>
           }

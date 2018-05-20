@@ -19,6 +19,15 @@ export default function Login({
 }) {
   return (
     <form>
+      <div className="user__form-group">
+        <input className="user__input" name="username" id="username" placeholder="Username" onChange={handleInputChange} value={username} />
+        <label htmlFor="username" className="user__label">Username</label>
+      </div>
+      <div className="user__form-group">
+        <input className="user__input" id="htmlForsword" name="password" type="password" placeholder="Password" onChange={handleInputChange} value={password} />
+        <label htmlFor="password" className="user__label">Password</label>
+      </div>
+      <input className="user__submit button button--nav" name="login" onClick={handleSubmitClick} type="submit" />
       <AuthError
         usernameLength={false}
         usernameLetters={false}
@@ -26,9 +35,6 @@ export default function Login({
         passwordMatch={false}
         incorrectDetails={loginError}
       />
-      <input name="username" placeholder="Username" onChange={handleInputChange} value={username} />
-      <input name="password" type="password" placeholder="Password" onChange={handleInputChange} value={password} />
-      <input className="submit" name="login" onClick={handleSubmitClick} type="submit" />
     </form>
   )
 }

@@ -1,0 +1,71 @@
+.create-quiz {
+  background-color: $colour-primary-lightest;
+  border-radius: $card-radius;
+  text-align: center;
+  padding: 2rem;
+  font-size: $default-font-size;
+  color: $colour-primary-dark;
+
+  &__title {
+    display: block;
+    margin: auto;
+    margin-bottom: 20px;
+    -webkit-appearance: none;
+    border: none;
+    font-size: $default-font-size + .3rem;
+    width: 100%;
+    padding: 1rem .5rem;
+    color: $colour-primary-dark;
+    background-color: $colour-primary-lightest;
+    border-radius: 0;
+  }
+
+  &__description {
+    outline: none;
+    border-radius: 3px;
+    width: 100%;
+    font-size: $default-font-size;
+    height: auto;
+    resize: none;
+    margin-bottom: 20px;
+    border: none;
+    padding: 1rem;
+    color: $colour-primary-dark;
+    background-color: $colour-primary-lightest;
+
+    &:focus {
+      border: 2px solid $colour-highlight;
+    }
+  }
+
+  &__slider {
+    width: 100%;
+  }
+}
+
+.create-quiz {
+  // background-color: #444444;
+
+  .quiz-title-input {
+
+  }
+  textarea {
+    // display: block;
+    // margin: auto;
+
+  }
+  input[type=range] {
+    // // -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+    // width: 80%; /* Specific width is required for Firefox. */
+    // // background: transparent; /* Otherwise white in Chrome */
+    // background-color: #fff;
+    // color: #fff;
+    // -webkit-appearance: slider-horizontal;
+    // color: rgb(144, 144, 144);
+    // cursor: default;
+    // padding: initial;
+    // border: initial;
+    // margin: 2px;
+  }
+
+}

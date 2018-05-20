@@ -20,6 +20,19 @@ export default function SignUp({
   // Incorrect details needs to be added
   return (
     <form>
+      <div className="user__form-group">
+        <input className="user__input" id="username" name="username" placeholder="Username" onChange={handleInputChange} value={username} />
+        <label htmlFor="username" className="user__label">Username</label>
+      </div>
+      <div className="user__form-group">
+        <input className="user__input" id="htmlForsword" name="password" type="password" placeholder="Password" onChange={handleInputChange} value={password} />
+        <label htmlFor="password" className="user__label">Password</label>
+      </div>
+      <div className="user__form-group">
+        <input className="user__input" id="confirm-password" name="confirmPassword" type="password" placeholder="Confirm Password" onChange={handleInputChange} value={confirmPassword} />
+        <label htmlFor="confirm-password" className="user__label">Confirm Password</label>
+      </div>
+      <input className="user__submit button button--nav" name="register" onClick={handleSubmitClick} type="submit" />
       <AuthError
         usernameLength={!/^[\da-z]{6,32}$/.test(username)}
         usernameLetters={!/.*[a-z].*[a-z].*/.test(username)}
@@ -27,10 +40,6 @@ export default function SignUp({
         passwordMatch={password !== confirmPassword}
         incorrectDetails={false}
       />
-      <input name="username" placeholder="Username" onChange={handleInputChange} value={username} />
-      <input name="password" type="password" placeholder="Password" onChange={handleInputChange} value={password} />
-      <input name="confirmPassword" type="password" placeholder="Confirm Password" onChange={handleInputChange} value={confirmPassword} />
-      <input className="submit" name="register" onClick={handleSubmitClick} type="submit" />
     </form>
   )
 }

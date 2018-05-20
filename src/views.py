@@ -412,7 +412,7 @@ def new():
     new_quiz = Quiz(
         name=bleach.clean(quiz["title"]),
         description=bleach.clean(quiz["description"]),
-        time_limit=bleach.clean(quiz["timer"]),
+        time_limit=quiz["timer"],
         visible=True,
         creator=data["user_id"]
     )
@@ -461,69 +461,6 @@ def new():
     print("Added to database")
 
     return "OK", 200
-
-
-# Admin routes
-
-@app.route("/add", methods=["GET", "POST"])
-def add():
-    if request.method == "GET":
-
-        return render_template("add.html")
-
-    if request.method == "POST":
-
-        # Loop could be stopped when it reaches an empty string instead
-        types = [x for x in request.form.getlist("code-type") if x != ""]
-        samples = [x for x in request.form.getlist("code-sample") if x != ""]
-        codes = []
-        for i, t in enumerate(types):
-            next_code = {
-                "type": bleach.clean(t),
-                "sample": bleach.clean(samples[i])
-            }
-            codes.append(next_code)
-
-        question = {
-            "text": bleach.clean(request.form["text"]),
-            "answer": bleach.clean(request.form["answer"]),
-            "duds": [bleach.clean(x)
-                     for x
-                     in request.form.getlist("incorrect")
-                     if x != ""],
-            "explanation": bleach.clean(request.form["explanation"]),
-            "codes": codes
-        }
-
-        with open("log.txt", "a") as f:
-            f.write(str(question["duds"]) + "\n\n")
-
-        new_question = Question(text=question["text"],
-                                answer=question["answer"],
-                                explanation=question["explanation"],
-                                correct_replies=0,
-                                incorrect_replies=0)
-        db_session.add(new_question)
-        # I am sure it is possible to condense this to one db commit!!!
-        db_session.commit()
-        print("Added question", question["text"])
-        for dud in question["duds"]:
-            new_dud = Dud(question_id=new_question.id,
-                          text=dud)
-            db_session.add(new_dud)
-            db_session.commit()
-            print("Added dud", dud)
-
-        for code in question["codes"]:
-            with open("log.txt", "a") as f:
-                f.write("Loading code" + str(code) + "\n")
-            new_code = Code(question_id=new_question.id,
-                            type=code["type"],
-                            sample=code["sample"])
-            db_session.add(new_code)
-            db_session.commit()
-
-        return render_template("add.html"), 200
 
 
 if __name__ == "__main__":

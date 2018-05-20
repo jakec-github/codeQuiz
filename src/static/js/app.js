@@ -5,20 +5,19 @@ import { Provider } from 'react-redux'
 
 import Main from './containers/main'
 import User from './containers/user'
+import Icon from './containers/icon'
 
 import store from './store'
 
 function App() {
   return (
     <div id="react-wrapper">
-      <header>
-        <h2>&lt;code_quiz&gt;</h2>
-        <div id="user-icon-wrapper">
-          <User />
-        </div>
+      <User />
+      <header className="header">
+        <Icon />
       </header>
       <main>
-        <div id="quiz">
+        <div className="app" id="quiz">
           <Main />
         </div>
       </main>

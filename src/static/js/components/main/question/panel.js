@@ -60,9 +60,9 @@ export default class extends React.Component {
       const answers = []
 
       for (let i = 0; i < thisQuestion.duds.length; i += 1) {
-        answers.push(<article className="answer btn" data-correct="incorrect" onClick={this.handleAnswerClick} key={i.toString()}>{thisQuestion.duds[i]}</article>)
+        answers.push(<article className="button button--choice" data-correct="incorrect" onClick={this.handleAnswerClick} key={i.toString()}>{thisQuestion.duds[i]}</article>)
       }
-      answers.push(<article className="answer btn" data-correct="correct" onClick={this.handleAnswerClick}>{thisQuestion.answer}</article>)
+      answers.push(<article className="button button--choice" data-correct="correct" onClick={this.handleAnswerClick}>{thisQuestion.answer}</article>)
       for (let i = answers.length - 1; i > 0; i -= 1) {
         const j = Math.floor(Math.random() * (answers.length))
         const temp = answers[i]
@@ -71,32 +71,32 @@ export default class extends React.Component {
       }
 
       return (
-        <div className="panel" id="answer-panel">
+        <div className="question__panel question__panel--choice" id="answer-panel">
           {answers}
         </div>
       )
     } else if (this.props.questionStatus === 'correct') {
       return (
-        <div className="panel" id="correct-panel">
-          <p>Correct</p>
-          <article className="answer btn" id="learn" onClick={this.handleLearnClick}>Learn more</article>
-          <article className="answer btn" id="next" onClick={this.handleNextClick}>{this.props.next}</article>
+        <div className="question__panel question__panel--correct" id="correct-panel">
+          <p className="question__panel-result">Correct</p>
+          <article className="button button--choice" id="learn" onClick={this.handleLearnClick}>Learn more</article>
+          <article className="button button--choice" id="next" onClick={this.handleNextClick}>{this.props.next}</article>
         </div>
       )
     } else if (this.props.questionStatus === 'incorrect') {
       return (
-        <div className="panel" id="incorrect-panel">
-          <p>Wrong Answer!</p>
-          <article className="answer btn" id="learn" onClick={this.handleLearnClick}>See answer</article>
-          <article className="answer btn" id="next" onClick={this.handleNextClick}>{this.props.next}</article>
+        <div className="question__panel question__panel--incorrect" id="incorrect-panel">
+          <p className="question__panel-result">Wrong Answer!</p>
+          <article className="button button--choice" id="learn" onClick={this.handleLearnClick}>See answer</article>
+          <article className="button button--choice" id="next" onClick={this.handleNextClick}>{this.props.next}</article>
         </div>
       )
     }
     return (
-      <div className="panel" id="explanation-panel">
-        <p>{thisQuestion.answer}</p>
-        <p>{thisQuestion.explanation}</p>
-        <article className="answer btn" id="next" onClick={this.handleNextClick}>{this.props.next}</article>
+      <div className="question__panel question__panel--explanation" id="explanation-panel">
+        <p className="question__panel-answer">{thisQuestion.answer}</p>
+        <p className="question__panel-text">{thisQuestion.explanation}</p>
+        <article className="button button--choice" id="next" onClick={this.handleNextClick}>{this.props.next}</article>
       </div>
     )
   }

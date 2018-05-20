@@ -31,10 +31,10 @@ export default class extends React.Component {
     // `${this.state.timer} ${this.state.timer === 1 ? 'minute' : 'minutes'}`
     return (
       <div className="create-quiz">
-        <input name="title" className="quiz-title-input" onChange={this.handleInputChange} value={this.props.title} />
-        <textarea name="description" className="quiz-description-input" onChange={this.handleInputChange} value={this.props.description} />
-        <p className="time-limit">{timeLimit}</p>
-        <input name="timer" className="time-slider" type="range" min="0" max="30" onChange={this.handleTimerChange} value={this.props.timer} />
+        <input type="text" name="title" className="create-quiz__title" onChange={this.handleInputChange} value={this.props.title} placeholder="Title" />
+        <textarea name="description" className="create-quiz__description" rows="4" onChange={this.handleInputChange} value={this.props.description} placeholder="A short description" />
+        <p className="create-quiz__time-limit">{timeLimit}</p>
+        <input name="timer" className="create-quiz__slider" type="range" min="0" max="30" onChange={this.handleTimerChange} value={this.props.timer} />
       </div>
     )
   }

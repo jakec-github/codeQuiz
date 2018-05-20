@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 
 export default class extends React.Component {
   static propTypes = {
-    // quizSize: PropTypes.number.isRequired,
     score: PropTypes.number.isRequired,
     quizId: PropTypes.string.isRequired,
     userId: PropTypes.string.isRequired,
@@ -37,11 +36,14 @@ export default class extends React.Component {
   }
 
   render() {
+    const score = Math.floor((this.props.score / this.props.questionSet.length) * 100)
+
     return (
-      <div>
-        <p>You got...</p>
-        <p>{this.props.score} out of {this.props.questionSet.length}</p>
-        <div id="menu" className="nav btn" onClick={this.handleMenuClick}>Menu</div>
+      <div className="result">
+        <p className="result__text">Your score is...</p>
+        <div className="result__percentage">{score}%</div>
+        <p className="result__score">{this.props.score} out of {this.props.questionSet.length}</p>
+        <div id="menu" className="button button--nav" onClick={this.handleMenuClick}>Menu</div>
       </div>
     )
   }

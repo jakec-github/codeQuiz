@@ -1,0 +1,32 @@
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+  font-family: $sans-serif;
+}
+
+html {
+  font-size: 62.5%; // 1rem = 10px
+}
+
+body {
+  box-sizing: border-box;
+  background-color: $colour-background;
+  margin: 0;
+  padding: 0;
+}
+
+input[type=text],
+input[type=email],
+input[type=tel],
+input[type=url],
+input[type=search] {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+
+  &:focus {
+    outline: none;
+    border-bottom: 2px solid $colour-highlight;
+  }
+}

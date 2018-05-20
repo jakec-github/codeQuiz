@@ -23,7 +23,7 @@ export default function AuthError({
                   !incorrectDetails
 
   return (
-    <div id="auth-error">
+    <div className="error u-margin-bottom-medium" id="auth-error">
       { usernameLength &&
         <p>Username must be between 6 and 32 lowercase alphanumeric characters</p>
       }

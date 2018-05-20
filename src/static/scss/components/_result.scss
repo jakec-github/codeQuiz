@@ -1,0 +1,22 @@
+.result {
+  color: $colour-primary-lightest;
+
+  &__text {
+    font-size: $default-font-size;
+  }
+
+  &__score {
+    font-size: $default-font-size - .2rem;
+  }
+
+  &__percentage {
+    margin: 3rem auto;
+    font-size: $default-font-size + .2rem;
+    background-color: $colour-highlight;
+    border-radius: 50%;
+    height: 6rem;
+    width: 6rem;
+    text-align: center;
+    line-height: 330%;
+  }
+}
