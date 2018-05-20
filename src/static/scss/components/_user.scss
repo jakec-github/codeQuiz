@@ -90,6 +90,10 @@
 
   &__input {
     padding: 1rem .2rem .2rem .2rem;
+    margin-bottom: 1rem;
+    min-width: 18rem;
+    border-radius: .5rem;
+    font-size: 1.5rem;
     &::-webkit-input-placeholder {
       color: transparent;
     }
@@ -101,10 +105,6 @@
 
   &__input:placeholder-shown {
     padding: .6rem .2rem;
-    margin-bottom: 1rem;
-    min-width: 18rem;
-    border-radius: .5rem;
-    font-size: 1.5rem;
   }
 
   &__input:placeholder-shown + &__label {
