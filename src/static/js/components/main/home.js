@@ -5,7 +5,7 @@ export default class extends React.Component {
   static propTypes = {
     selectQuiz: PropTypes.func.isRequired,
     changeLocation: PropTypes.func.isRequired,
-    userId: PropTypes.number.isRequired,
+    userId: PropTypes.string.isRequired,
     loggedIn: PropTypes.bool.isRequired,
   }
 
@@ -49,6 +49,38 @@ export default class extends React.Component {
       })
   }
 
+  componentWillReceiveProps = (props) => {
+    console.log('Home receiving props')
+    console.log(props.loggedIn)
+    console.log(this.props.loggedIn)
+
+    if (this.props.loggedIn !== props.loggedIn) {
+      if (props.loggedIn) {
+        const query = {
+          user_id: parseInt(props.userId, 10),
+        }
+        fetch('/userscores', {
+          method: 'post',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify(query),
+        })
+          .then(data => (data ? data.json() : false))
+          .then((data) => {
+            console.log('All scores for user')
+            console.log(data)
+            this.setState({ allScores: data || [] })
+          })
+      } else {
+        this.setState({
+          allScores: [],
+        })
+      }
+    }
+  }
+
   handleQuizClick = (event) => {
     const quizId = event.target.dataset.id
     this.props.selectQuiz(quizId)
@@ -82,7 +114,7 @@ export default class extends React.Component {
     return (
       <div className="home">
         {quizzes}
-        { Boolean(this.props.userId.length) &&
+        { this.props.loggedIn &&
           <article className="button button--nav" onClick={this.handleCreateClick}>Make a quiz</article>
         }
       </div>

@@ -103,7 +103,7 @@ export default class extends React.Component {
           })
           console.log(this.props)
           console.log(this.props.handleLogin)
-          this.props.handleLogin(response.user_id)
+          this.props.handleLogin(response.user_id.toString())
         }
       })
   }
