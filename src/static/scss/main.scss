@@ -19,35 +19,35 @@
 @import "components/start";
 @import "components/user";
 
-@media screen and (min-width: 500px) {
-
-  #quiz {
-    max-width: 70%;
-  }
-
-  .nav {
-    font-size: 20px;
-    padding: 10px 30px;
-    color: white;
-    min-width: 10%;
-    max-width: 10%;
-    margin: auto;
-  }
-
-  .panel {
-    grid-template-columns: 1fr 1fr;
-    grid-column-gap: 5px;
-  }
-
-  #explanation-panel {
-    grid-template-columns: 1fr;
-  }
-
-  #learn {
-    grid-column: 1/2;
-  }
-
-  #code {
-    min-width: 50%;
-  }
-}
+// @media screen and (min-width: 500px) {
+//
+//   #quiz {
+//     max-width: 70%;
+//   }
+//
+//   .nav {
+//     font-size: 20px;
+//     padding: 10px 30px;
+//     color: white;
+//     min-width: 10%;
+//     max-width: 10%;
+//     margin: auto;
+//   }
+//
+//   .panel {
+//     grid-template-columns: 1fr 1fr;
+//     grid-column-gap: 5px;
+//   }
+//
+//   #explanation-panel {
+//     grid-template-columns: 1fr;
+//   }
+//
+//   #learn {
+//     grid-column: 1/2;
+//   }
+//
+//   #code {
+//     min-width: 50%;
+//   }
+// }

@@ -9,4 +9,12 @@
   padding: 1rem;
   border-radius: 1.5rem;
   box-shadow: $card-shadow;
+
+  @include respond(tab-port) {
+    max-width: 66.6666%;
+  }
+
+  @include respond(tab-land) {
+    max-width: 50rem;
+  }
 }

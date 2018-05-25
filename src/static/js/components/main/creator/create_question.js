@@ -112,7 +112,7 @@ export default class extends React.Component {
         <div className="question__progress-outer" id="total-progress">
           <div className="question__progress-score-box" id="progress-fraction">
             <p className="question__progress-score">
-              {this.props.creatorPosition}/{this.props.questions.length}
+              { this.props.creatorPosition}/{this.props.questions.length}
             </p>
           </div>
           <div className="question__progress-inner" id="current-progress" style={progressStyle} />
@@ -135,13 +135,15 @@ export default class extends React.Component {
             { codeContents[this.props.code] }
           </pre>
         </article>
-        <input name="answer" className="create-question__choice create-question__choice--answer" onChange={this.handleInputChange} placeholder="Answer" value={this.props.answer} />
-        {duds}
-        {this.props.duds.length < 5 &&
-          <div className="create-question__choice create-question__choice--add" onClick={this.handleAddDudClick}>
-            Add incorrect answer
-          </div>
-        }
+        <div className="create-question__choices">
+          <input name="answer" className="create-question__choice create-question__choice--answer" onChange={this.handleInputChange} placeholder="Answer" value={this.props.answer} />
+          {duds}
+          { this.props.duds.length < 5 &&
+            <div className="create-question__choice create-question__choice--add" onClick={this.handleAddDudClick}>
+              Add incorrect answer
+            </div>
+          }
+        </div>
         <textarea name="explanation" rows="6" className="create-question__explanation" onChange={this.handleInputChange} placeholder="Explanation" value={this.props.explanation} />
       </div>
     )

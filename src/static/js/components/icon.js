@@ -18,8 +18,8 @@ export default class extends React.Component {
       '<code_quiz>', // &lt;code_quiz&gt;
       '#Code Quiz',
       '//Code Quiz',
-      '[code, quiz]',
-      '{code:\'quiz\'}',
+      '[code,quiz]',
+      '{code:quiz}',
       'codeQuiz',
     ]
     return (

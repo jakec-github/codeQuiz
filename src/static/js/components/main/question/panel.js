@@ -96,7 +96,9 @@ export default class extends React.Component {
       <div className="question__panel question__panel--explanation" id="explanation-panel">
         <p className="question__panel-answer">{thisQuestion.answer}</p>
         <p className="question__panel-text">{thisQuestion.explanation}</p>
-        <article className="button button--choice" id="next" onClick={this.handleNextClick}>{this.props.next}</article>
+        <div className="u-centre-width-25rem">
+          <article className="button button--choice" id="next" onClick={this.handleNextClick}>{this.props.next}</article>
+        </div>
       </div>
     )
   }

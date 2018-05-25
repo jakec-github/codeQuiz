@@ -7,6 +7,13 @@
 
 html {
   font-size: 62.5%; // 1rem = 10px
+
+  @include respond(tab-port) {
+    font-size: 68.75%; // 1rem = 11px
+  }
+  @include respond(tab-land) {
+    font-size: 75%; // 1rem = 12px
+  }
 }
 
 body {

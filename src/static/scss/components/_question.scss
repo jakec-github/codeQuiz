@@ -93,6 +93,11 @@
     grid-row-gap: 5px;
     padding: 5px;
 
+    @include respond(tab-land) {
+      grid-template-columns: 1fr 1fr;
+      grid-column-gap: 5px;
+    }
+
     &--choice {
       background-color: $colour-background;
     }
@@ -107,6 +112,10 @@
 
     &--explanation {
       background-color: $colour-primary-dark;
+
+      @include respond(tab-land) {
+        grid-template-columns: 1fr;
+      }
     }
   }
 

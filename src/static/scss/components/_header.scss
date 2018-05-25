@@ -10,8 +10,12 @@
     font-family: $monospace;
     position: absolute;
     top: 20%;
-    left: 30%;
+    left: 10rem;
     transform: translate(-50%, -50%) rotate(-3deg);
     font-size: 2.8rem;
+
+    @include respond(tab-land) {
+      transform: translate(-50%, -50%) rotate(-1.5deg);
+    }
   }
 }

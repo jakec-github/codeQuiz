@@ -192,44 +192,46 @@ export default class extends React.Component {
             changeCode={this.changeCode}
           />
         }
-        { (this.state.submitConfirm || this.state.deleteConfirm) &&
-          <div className="creator__nav-box u-margin-top-tiny u-margin-bottom-tiny">
-            <div className="creator__nav creator__nav--no button button--nav u-no-margin" id="no" onClick={this.handleConfirmClick}>
-              No
+        <div className="creator__console">
+          { (this.state.submitConfirm || this.state.deleteConfirm) &&
+            <div className="creator__nav-box u-margin-top-tiny u-margin-bottom-tiny">
+              <div className="creator__nav creator__nav--no button button--nav u-no-margin" id="no" onClick={this.handleConfirmClick}>
+                No
+              </div>
+              <div className="creator__nav creator__nav--yes button button--nav" id="yes" onClick={this.handleConfirmClick}>
+                Yes
+              </div>
             </div>
-            <div className="creator__nav creator__nav--yes button button--nav" id="yes" onClick={this.handleConfirmClick}>
-              Yes
+          }
+          { !(this.state.submitConfirm || this.state.deleteConfirm) &&
+            <div className="creator__nav-box u-margin-top-tiny">
+              <div className="creator__nav creator__nav--back button button--nav-blue u-no-margin" id="back" onClick={this.handleNavClick}>
+                Back
+              </div>
+              <div className="creator__nav creator__nav--forward button button--nav-blue" id="forward" onClick={this.handleNavClick}>
+                Forward
+              </div>
             </div>
+          }
+          <div className="creator__delete button button--nav-blue" onClick={this.handleDeleteClick}>
+            { this.state.deleteConfirm &&
+              <p>Are you sure?</p>
+            }
+            { (!this.state.deleteConfirm && this.props.creatorPosition === 0) &&
+              <p>Delete Quiz</p>
+            }
+            { (!this.state.deleteConfirm && this.props.creatorPosition > 0) &&
+              <p>Delete Question</p>
+            }
           </div>
-        }
-        { !(this.state.submitConfirm || this.state.deleteConfirm) &&
-          <div className="creator__nav-box u-margin-top-tiny">
-            <div className="creator__nav creator__nav--back button button--nav-blue u-no-margin" id="back" onClick={this.handleNavClick}>
-              Back
-            </div>
-            <div className="creator__nav creator__nav--forward button button--nav-blue" id="forward" onClick={this.handleNavClick}>
-              Forward
-            </div>
+          <div className="creator__submit-quiz button button--nav-blue" onClick={this.handleSubmitClick}>
+            { this.state.submitConfirm &&
+              <p>Are you sure?</p>
+            }
+            { !this.state.submitConfirm &&
+              <p>Submit</p>
+            }
           </div>
-        }
-        <div className="creator__delete button button--nav-blue" onClick={this.handleDeleteClick}>
-          { this.state.deleteConfirm &&
-            <p>Are you sure?</p>
-          }
-          { (!this.state.deleteConfirm && this.props.creatorPosition === 0) &&
-            <p>Delete Quiz</p>
-          }
-          { (!this.state.deleteConfirm && this.props.creatorPosition > 0) &&
-            <p>Delete Question</p>
-          }
-        </div>
-        <div className="creator__submit-quiz button button--nav-blue" onClick={this.handleSubmitClick}>
-          { this.state.submitConfirm &&
-            <p>Are you sure?</p>
-          }
-          { !this.state.submitConfirm &&
-            <p>Submit</p>
-          }
         </div>
       </div>
     )
