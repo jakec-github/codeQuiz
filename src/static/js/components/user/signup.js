@@ -25,7 +25,7 @@ export default function SignUp({
         <label htmlFor="username" className="user__label">Username</label>
       </div>
       <div className="user__form-group">
-        <input className="user__input" id="htmlForsword" name="password" type="password" placeholder="Password" onChange={handleInputChange} value={password} />
+        <input className="user__input" id="password" name="password" type="password" placeholder="Password" onChange={handleInputChange} value={password} />
         <label htmlFor="password" className="user__label">Password</label>
       </div>
       <div className="user__form-group">
