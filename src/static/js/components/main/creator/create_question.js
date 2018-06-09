@@ -56,6 +56,8 @@ export default class extends React.Component {
     //   codes,
     // })
     const codes = JSON.parse(JSON.stringify(this.props.codes)) // Get a better way to do this
+    // This line may not work. May have to use above. Also check other use in file
+    // const codes = [...this.props.codes]
     codes[target.dataset.value].contents = target.value
     this.props.updateState('codes', codes)
   }
@@ -86,6 +88,19 @@ export default class extends React.Component {
       this.props.changeCode(newCode)
     }
   }
+  // event, { event: key, target, target: { value, selectionStart, selectionEnd } }
+  handleCodeKey = (event) => {
+    const { key, target, target: { value, selectionStart, selectionEnd } } = event
+    // const { value, selectionStart, selectionEnd } = target
+    if (key === 'Tab') {
+      event.preventDefault()
+      const codes = JSON.parse(JSON.stringify(this.props.codes)) // Get a better way to do this
+      // This line may not work. May have to use above. Also check other use in file
+      // const codes = [...this.props.codes]
+      codes[target.dataset.value].contents = `${value.substring(0, selectionStart)}\t${value.substring(selectionEnd)}`
+      this.props.updateState('codes', codes)
+    }
+  }
 
   render() {
     const tabs = []
@@ -93,7 +108,18 @@ export default class extends React.Component {
     const duds = []
     this.props.codes.forEach((code, i) => {
       tabs.push(<article onClick={this.handleTabClick} className={i === this.props.code ? 'create-question__code-tab create-question__code-tab--selected' : 'create-question__code-tab create-question__code-tab--unselected'} data-value={i.toString()} key={i.toString()}>{code.language}</article>)
-      codeContents.push(<textarea rows="12" className="create-question__code-content" data-value={i.toString()} key={i.toString()} onChange={this.handleCodeChange} value={this.props.codes[i].contents} placeholder="Paste or type your code here" />)
+      codeContents.push((
+        <textarea
+          rows="12"
+          className="create-question__code-content"
+          data-value={i.toString()}
+          key={i.toString()}
+          onKeyDown={this.handleCodeKey}
+          onChange={this.handleCodeChange}
+          value={this.props.codes[i].contents}
+          placeholder="Paste or type your code here"
+        />
+      ))
     })
     this.props.duds.forEach((dud, i) => {
       duds.push(<input className="create-question__choice create-question__choice--incorrect" data-value={i.toString()} key={i.toString()} placeholder="Incorrect Answer" onChange={this.handleDudChange} value={this.props.duds[i]} />)

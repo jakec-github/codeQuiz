@@ -1,3 +1,5 @@
+import 'babel-polyfill'
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 
@@ -7,7 +9,9 @@ import Main from './containers/main'
 import User from './containers/user'
 import Icon from './containers/icon'
 
-import store from './store'
+import { store, sagaMiddleware } from './store'
+
+import rootSaga from './sagas'
 
 function App() {
   return (
@@ -24,6 +28,8 @@ function App() {
     </div>
   )
 }
+
+sagaMiddleware.run(rootSaga)
 
 ReactDOM.render(
   (

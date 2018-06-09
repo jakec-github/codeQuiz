@@ -1,4 +1,5 @@
-import { createStore, combineReducers } from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
+import createSagaMiddleware from 'redux-saga'
 
 import { main } from './reducers/main'
 import { user } from './reducers/user'
@@ -13,6 +14,11 @@ const rootReducer = combineReducers({
   creator,
 })
 
-const store = createStore(rootReducer)
+export const sagaMiddleware = createSagaMiddleware()
 
-module.exports = store
+export const store = createStore(
+  rootReducer,
+  applyMiddleware(sagaMiddleware),
+)
+
+// module.exports = store
